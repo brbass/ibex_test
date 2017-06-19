@@ -23,8 +23,9 @@ groups = openmc.mgxs.EnergyGroups(group_edges=[1e-5, 2.0e6])
 fuel_xsdata = openmc.XSdata('fuel', groups)
 fuel_xsdata.order = 1
 fuel_xsdata.set_total([1.0])
-fuel_xsdata.set_absorption([0.0])
+fuel_xsdata.set_absorption([0.1])
 fuel_xsdata.set_scatter_matrix([[[0.9, 0.0]]])
+fuel_xsdata.set_fission([0.1])
 fuel_xsdata.set_nu_fission([0.2])
 fuel_xsdata.set_chi([1.0])
 
@@ -56,10 +57,10 @@ materials_file.export_to_xml()
 # Instantiate ZCylinder surfaces
 xmin = openmc.XPlane(surface_id=4, x0=-0.627, name='xmin')
 xmax = openmc.XPlane(surface_id=5, x0=0.627, name='xmax')
-ymin = openmc.YPlane(surface_id=4, x0=-0.627, name='ymin')
-ymax = openmc.YPlane(surface_id=5, x0=0.627, name='ymax')
-zmin = openmc.ZPlane(surface_id=4, x0=-0.627, name='zmin')
-zmax = openmc.ZPlane(surface_id=5, x0=0.627, name='zmax')
+ymin = openmc.YPlane(surface_id=4, y0=-0.627, name='ymin')
+ymax = openmc.YPlane(surface_id=5, y0=0.627, name='ymax')
+zmin = openmc.ZPlane(surface_id=4, z0=-0.627, name='zmin')
+zmax = openmc.ZPlane(surface_id=5, z0=0.627, name='zmax')
 
 xmin.boundary_type = 'vacuum'
 xmax.boundary_type = 'vacuum'
@@ -100,7 +101,21 @@ settings_file.particles = particles
 
 # Create an initial uniform spatial source distribution over fissionable zones
 bounds = [-0.627, -0.627, -0.627, 0.627, 0.627, 0.627]
-uniform_dist = openmc.stats.Box(bounds[:3], bounds[3:])
+uniform_dist = openmc.stats.Box(bounds[:3], bounds[3:], only_fissionable=True)
 settings_file.source = openmc.source.Source(space=uniform_dist)
 
 settings_file.export_to_xml()
+
+###############################################################################
+#                   Run OpenMC
+###############################################################################
+
+openmc.run(threads=4)
+
+###############################################################################
+#                   Post-Processing
+###############################################################################
+
+statepoint = openmc.StatePoint('statepoint.{}.h5'.format(batches))
+
+# print(statepoint.k_combined)

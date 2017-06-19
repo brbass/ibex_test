@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<materials>
+    <cross_sections>./mgxs.h5</cross_sections>
+    <material id="1" name="fuel">
+        <density units="macro" value="1.0" />
+        <macroscopic name="fuel" />
+    </material>
+    <material id="2" name="clad">
+        <density units="macro" value="1.0" />
+        <macroscopic name="clad" />
+    </material>
+    <material id="3" name="mod">
+        <density units="macro" value="1.0" />
+        <macroscopic name="mod" />
+    </material>
+</materials>

@@ -8,9 +8,9 @@ import openmc.mgxs
 ###############################################################################
 
 # OpenMC simulation parameters
-batches = 100
-inactive = 10
-particles = 1000
+batches = 200
+inactive = 50
+particles = int(1e6)
 
 ###############################################################################
 #                 Exporting to OpenMC mgxs.h5 file
@@ -23,7 +23,7 @@ groups = openmc.mgxs.EnergyGroups(group_edges=[1e-5, 20.0e6])
 fuel_xsdata = openmc.XSdata('fuel', groups)
 fuel_xsdata.order = 1
 fuel_xsdata.set_total([1.0])
-fuel_xsdata.set_absorption([0.0])
+fuel_xsdata.set_absorption([0.1])
 fuel_xsdata.set_scatter_matrix([[[0.9, 0.1]]])
 fuel_xsdata.set_fission([0.1])
 fuel_xsdata.set_nu_fission([0.2])
@@ -131,3 +131,10 @@ uniform_dist = openmc.stats.Box(bounds[:3], bounds[3:])
 settings_file.source = openmc.source.Source(space=uniform_dist)
 
 settings_file.export_to_xml()
+
+###############################################################################
+#                   Run OpenMC
+###############################################################################
+
+openmc.run(threads=3)
+

@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<settings>
+    <run_mode>eigenvalue</run_mode>
+    <particles>1000000</particles>
+    <batches>200</batches>
+    <inactive>50</inactive>
+    <source strength="1.0">
+        <space type="box">
+            <parameters>-0.5 -0.5 -1 0.5 0.5 1</parameters>
+        </space>
+    </source>
+    <energy_mode>multi-group</energy_mode>
+</settings>
