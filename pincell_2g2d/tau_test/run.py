@@ -1,7 +1,9 @@
 import os, sys, subprocess, itertools, multiprocessing, functools
 import numpy as np
 import xml.etree.ElementTree as et
+import matplotlib; matplotlib.use('Agg')
 from matplotlib import pyplot as plt
+from ibex_io import get_data
 
 def get_filename(tau,
                  weighting,
@@ -82,14 +84,13 @@ def get_tau_commands(weighting,
     
 def run_tau_vals(weighting,
                  radius,
-                 points_test_num):
+                 points_test_num,
+                 num_procs=4):
     # Get input commands
     tau_vals, input_data = get_tau_commands(weighting,
                                             radius,
                                             points_test_num)
 
-    # Create multi
-    num_procs = 4
     # Create multiprocessing pool
     print("creating {} processes to run {} problems".format(num_procs,
                                                             len(input_data)))
@@ -106,24 +107,36 @@ def plot_tau_vals(weighting,
     tau_vals, input_data_vals = get_tau_commands(weighting,
                                                  radius,
                                                  points_test_num)
-    for input_data in input_data_vals:
+    k_benchmark = 1.24385889
+    err_vals = np.zeros(len(tau_vals))
+    for i, input_data in enumerate(input_data_vals):
         filename = get_filename(*input_data,
                                 True)
-        
-        
-        
-    
+        try:
+            data = get_data(filename)
+            err_vals[i] = np.abs(data["k_eigenvalue"] - k_benchmark) * 1e5
+        except:
+            print("{} failed".format(filename))
+    plt.figure()
+    plt.xlabel(r"$\tau$")
+    plt.ylabel(r"error in pcm")
+    plt.semilogy(tau_vals, err_vals)
+    plt.savefig("tau_plot_{}_{}_{}.pdf".format(weighting, radius, points_test_num), bbox_inches='tight')
+    plt.close()
     
 if __name__ == '__main__':
-    # run_tau_vals("weight",
-    #              3.0,
-    #              0)
-    # run_tau_vals("flux",
-    #              3.0,
-    #              0)
-    plot_tau_vals("weight",
-                  3.0,
-                  0)
-    plot_tau_vals("flux",
-                  3.0,
-                  0)
+    radius = 4.0
+    num_procs = [4, 4, 1]
+    test_nums = [0, 1]
+    weightings = ["weight", "flux"]
+    for test_num in test_nums:
+        for weighting in weightings:
+            run_tau_vals(weighting,
+                         radius,
+                         test_num,
+                         num_procs[test_num])
+    for test_num in test_nums:
+        for weighting in weightings:
+            plot_tau_vals(weighting,
+                          radius,
+                          test_num)

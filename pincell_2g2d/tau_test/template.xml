@@ -144,7 +144,7 @@
              flux_path='output solver coefficients'
              external_integral_calculation='true'
              supg='(SUPG)'
-             tau_scaling='none'
+             tau_scaling='absolute'
              identical_basis_functions='true'>
       <integration_ordinates>16</integration_ordinates>
       <tau>(TAU)</tau>
@@ -160,14 +160,10 @@
     </weight_functions>
   </spatial_discretization>
   <problem type='eigenvalue'/>
-  <transport solver='amesos'
-             max_iterations='1000'
-             kspace='20'
-             level_of_fill='4'
-             tolerance='1e-8'/>
+  <transport solver='amesos'/>
   <solver type='krylov'
-          max_inverse_iterations='10000'
-          max_iterations='100'
+          max_inverse_iterations='200'
+          max_iterations='10'
           kspace='20'
           solver_print='0'
           tolerance='1e-8'/>
