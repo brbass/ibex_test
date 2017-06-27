@@ -99,11 +99,14 @@ def plot_all(weighting,
     plt.savefig("convergence_plot_{}_{}_{}.pdf".format(description, weighting, radius), bbox_inches='tight')
     plt.close()
     return
+    
 def plot_together(radius):
-    plt.figure()
+    plt.figure(figsize=(3.5, 3.5))
     plt.xlabel("number of points")
     plt.ylabel("error in pcm")
     plt.ylim([10, 10**3])
+    markers = ['D', '^', 's', 'v']
+    j = 0
     for weighting in ["weight", "flux"]:
         for description in ["square", "pincell"]:
             k_benchmark = 1.24379490
@@ -122,19 +125,27 @@ def plot_together(radius):
                     err_vals[i] = np.abs(data["k_eigenvalue"] - k_benchmark) * 1e5
                 except:
                     print("{} failed".format(filename))
-            plt.semilogy(point_vals, err_vals, basey=10, label="{}/{}".format(weighting, description))
+            if weighting == "weight":
+                label = "flat, {}".format(description)
+            else:
+                label = "flux, {}".format(description)
+            plt.semilogy(point_vals, err_vals, marker=markers[j], basey=10, label=label)
+            j = j + 1
+    plt.grid(True, which='major', linestyle='-', color='grey')
+    plt.grid(True, which='minor', linestyle='-', color='lightgray')
+    plt.minorticks_on()
     plt.legend()
     plt.savefig("convergence_plot_{}.pdf".format(radius), bbox_inches='tight')
     plt.close()
-            
+    
 if __name__ == '__main__':
     radii = [3.0]
     weightings = ["weight", "flux"]
     descriptions = ["square", "pincell"]
     for radius in radii:
-        for description in descriptions:
-            for weighting in weightings:
-                run_all(weighting,
-                        radius,
-                        description)
+        # for description in descriptions:
+        #     for weighting in weightings:
+        #         run_all(weighting,
+        #                 radius,
+        #                 description)
         plot_together(radius)
