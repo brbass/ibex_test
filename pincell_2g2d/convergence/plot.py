@@ -1,8 +1,9 @@
 import os, sys, subprocess, itertools, multiprocessing, functools
 import numpy as np
 import xml.etree.ElementTree as et
-#import matplotlib; matplotlib.use('agg')
+import matplotlib; matplotlib.use('agg')
 from matplotlib import pyplot as plt
+import matplotlib.ticker as ticker
 from ibex_io import get_data
 
 def plot_points(data,
@@ -30,12 +31,42 @@ def plot_points(data,
 
     # Save plot
     #plt.show()
-    plt.savefig("{}.pdf".format(output))
+    plt.savefig("{}.pdf".format(output), bbox_inches='tight')
     plt.close()
     return
 
 def plot_eigenvectors(data,
                       output):
+    # Get data
+    num_groups = data["number_of_groups"]
+    num_points = data["number_of_points"]
+    num_moments = data["number_of_moments"]
+    phi = np.abs(data["phi"])*100
+    points = data["points"]
+    def fmt(x, pos):
+        return r'{:.3f}'.format(x)
+        # a, b = '{:.2f}'.format(x).split('f')
+        # b = int(b)
+        # return r'${} \times 10^{{{}}}$'.format(a, b)
+
+    for g in range(num_groups):
+        # Plot data
+        #plt.figure()
+        plt.figure(figsize=(5.5, 4.125))
+        plt.tripcolor(points[:, 0], points[:, 1], phi[:, 0, g], shading='gouraud')
+
+        # Plot options
+        plt.xlabel("x")
+        plt.ylabel("y")
+        plt.colorbar(label="scalar flux", format=ticker.FuncFormatter(fmt))
+        plt.axis('equal')
+        plt.tight_layout()
+        #print(plt.gcf().get_size_inches())
+        
+        # Save plot
+        plt.savefig("{}_g{}.pdf".format(output, g), bbox_inches='tight')
+        plt.close()
+    #plt.show()
     return
 
 def plot_all():

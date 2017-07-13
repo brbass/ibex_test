@@ -26,7 +26,7 @@ def run_problem(tau,
                 radius,
                 points_test_num):
     # Get data for points
-    points_data = [["pincell_clad_0.4095_0.475_1.254_{}_{}_{}.xml".format(3*i, i, 8*i),"{0} {0}".format(12*i)] for i in range(2, 8)]
+    points_data = [["square_1.254_{}.xml".format(10*i),"{0} {0}".format(10*i - 1)] for i in range(2, 8)]
     points_data = points_data[points_test_num]
     points_filename = points_data[0]
     dimensional_cells = points_data[1]
@@ -125,7 +125,7 @@ def plot_tau_vals(weighting,
 if __name__ == '__main__':
     radius = 3.0
     num_procs = [4, 4, 3, 1, 1]
-    test_nums = [0, 1, 2, 3]
+    test_nums = [0, 1, 2, 3, 4]
     weightings = ["weight", "flux"]
     # for test_num in test_nums:
     #     for weighting in weightings:

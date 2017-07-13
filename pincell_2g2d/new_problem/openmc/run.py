@@ -10,7 +10,7 @@ import openmc.mgxs
 # OpenMC simulation parameters
 batches = 200
 inactive = 50
-particles = int(1e7)
+particles = int(1e5)
 
 ###############################################################################
 #                 Exporting to OpenMC mgxs.h5 file
@@ -23,19 +23,19 @@ groups = openmc.mgxs.EnergyGroups(group_edges=[1e-5, 1e2, 20.0e6])
 fuel_xsdata = openmc.XSdata('fuel', groups)
 fuel_xsdata.order = 1
 fuel_xsdata.set_total([1.0, 2.0])
-fuel_xsdata.set_scatter_matrix([[[0.9, 0.1], [0.03, 0.0]],
-                                [[0.2, 0.0], [1.4, 0.0]]])
-fuel_xsdata.set_fission([0.02, 0.3])
-fuel_xsdata.set_absorption([0.07, 0.4])
-fuel_xsdata.set_nu_fission([0.046, 0.69])
+fuel_xsdata.set_scatter_matrix([[[0.8, 0.1], [0.03, 0.0]],
+                                [[0.0, 0.0], [0.4, 0.0]]])
+fuel_xsdata.set_fission([0.1, 0.9])
+fuel_xsdata.set_absorption([0.17, 1.6])
+fuel_xsdata.set_nu_fission([0.23, 2.07])
 fuel_xsdata.set_chi([1.0, 0.0])
 
 clad_xsdata = openmc.XSdata('clad', groups)
 clad_xsdata.order = 1
-clad_xsdata.set_total([0.1, 0.2])
+clad_xsdata.set_total([0.2, 0.4])
 clad_xsdata.set_scatter_matrix([[[0.1, 0.03], [0.0, 0.0]],
                                 [[0.0, 0.0], [0.2, 0.0]]])
-clad_xsdata.set_absorption([0.0, 0.0])
+clad_xsdata.set_absorption([0.1, 0.2])
 
 mod_xsdata = openmc.XSdata('mod', groups)
 mod_xsdata.order = 1

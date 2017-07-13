@@ -101,7 +101,7 @@ def plot_all(weighting,
     return
     
 def plot_together(radius):
-    plt.figure(figsize=(3.5, 3.5))
+    plt.figure(figsize=(5.5, 5.5))
     plt.xlabel("number of points")
     plt.ylabel("error in pcm")
     plt.ylim([10, 10**3])
@@ -131,6 +131,8 @@ def plot_together(radius):
                 label = "flux, {}".format(description)
             plt.semilogy(point_vals, err_vals, marker=markers[j], basey=10, label=label)
             j = j + 1
+            print(weighting, description, 2 * np.log(err_vals[-4] / err_vals[-3]) / np.log(point_vals[-3] / point_vals[-4]))
+            print(err_vals)
     plt.grid(True, which='major', linestyle='-', color='grey')
     plt.grid(True, which='minor', linestyle='-', color='lightgray')
     plt.minorticks_on()
