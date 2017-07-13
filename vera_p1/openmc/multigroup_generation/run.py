@@ -51,18 +51,18 @@ n92238 = openmc.Nuclide('U238')
 # Materials #
 #############
 
-m_fuel = openmc.Material(name='fuel', temperature=565)
+m_fuel = openmc.Material(name='fuel', temperature=600)
 m_fuel.set_density('g/cc', 10.257)
 m_fuel.add_nuclide(n8016,  4.57642e-02)
 m_fuel.add_nuclide(n92234, 6.11864e-06)
 m_fuel.add_nuclide(n92235, 7.18132e-04)
 m_fuel.add_nuclide(n92238, 2.21546e-02)
 
-m_gap = openmc.Material(name='gap', temperature=565)
+m_gap = openmc.Material(name='gap', temperature=600)
 m_gap.set_density('g/cc', 0.0001786)
 m_gap.add_nuclide(n2004, 2.68714e-05)
 
-m_clad = openmc.Material(name='cladding', temperature=565)
+m_clad = openmc.Material(name='cladding', temperature=600)
 m_clad.set_density('g/cc', 6.56)
 m_clad.add_nuclide(n24050, 3.30121e-06)
 m_clad.add_nuclide(n24052, 6.36606e-05)
@@ -94,14 +94,14 @@ m_clad.add_nuclide(n72178, 6.03806e-07)
 m_clad.add_nuclide(n72179, 3.01460e-07)
 m_clad.add_nuclide(n72180, 7.76449e-07)
 
-m_mod = openmc.Material(name='moderator', temperature=565)
-m_mod.set_density('g/cc', 0.743)
+m_mod = openmc.Material(name='moderator', temperature=600)
+m_mod.set_density('g/cc', 0.661)
 m_mod.add_nuclide(n1001, 4.96224E-02)
 m_mod.add_nuclide(n5010, 1.07070E-05)
 m_mod.add_nuclide(n5011, 4.30971E-05)
 m_mod.add_nuclide(n8016, 2.48112E-02)
 
-# m_ifba = openmc.Material(name='ifba', temperature=565)
+# m_ifba = openmc.Material(name='ifba', temperature=600)
 # m_ifba.set_density('g/cc', 3.85)
 # m_ifba.add_nuclide(n5010, 2.16410E-02)
 # m_ifba.add_nuclide(n5011, 1.96824E-02)
@@ -159,15 +159,55 @@ geometry.export_to_xml()
 settings_file = openmc.Settings()
 settings_file.batches = 200
 settings_file.inactive = 50
-settings_file.particles = int(1e5)
+settings_file.particles = int(1e4)
 
 bounds = [-0.5, -0.5, -1, 0.5, 0.5, 1]
 uniform_dist = openmc.stats.Box(bounds[:3], bounds[3:])
 settings_file.source = openmc.source.Source(space=uniform_dist)
 settings_file.export_to_xml()
 
+#############################
+# Multigroup cross sections #
+#############################
+
+groups = mgxs.EnergyGroups()
+groups.group_edges = np.array([0., 1.0e2, 2.0e7])
+
+tallies_file = openmc.Tallies()
+
+xs_store = []
+
+for cell in [c_fuel, c_gap, c_clad, c_mod]:
+    sigma_t = mgxs.TotalXS(domain=cell, groups=groups)
+    sigma_a = mgxs.AbsorptionXS(domain=cell, groups=groups)
+    sigma_s = mgxs.ScatterMatrixXS(domain=cell, groups=groups)
+    sigma_s.legendre_order = 1
+    nu_sigma_f = mgxs.NuFissionMatrixXS(domain=cell, groups=groups)
+    
+    tallies_file += sigma_t.tallies.values()
+    tallies_file += sigma_a.tallies.values()
+    tallies_file += sigma_s.tallies.values()
+    tallies_file += nu_sigma_f.tallies.values()
+
+    xs_store.append(sigma_t)
+    xs_store.append(sigma_a)
+    xs_store.append(sigma_s)
+    xs_store.append(nu_sigma_f)
+   
+tallies_file.export_to_xml()
+    
 #######
 # Run #
 #######
 
 openmc.run(threads=4)
+
+################
+# Load results #
+################
+
+sp = openmc.StatePoint("statepoint.{}.h5".format(settings_file.batches))
+
+for xs in xs_store:
+    xs.load_from_statepoint(sp)
+    xs.print_xs()
