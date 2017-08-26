@@ -8,36 +8,36 @@
     <rule>3</rule>
   </angular_discretization>
   <materials>
-   <number_of_materials>4</number_of_materials>
+   <number_of_materials>5</number_of_materials>
     <material index='0'
               name='fuel'>
       <sigma_t>
-        0.399697649 0.581826884
+        0.398430149 0.566537670
       </sigma_t>
       <sigma_s>
-        0.383829618 0.0
-        0.000830382 0.405420306
-        0.049482651 0.0
-        -0.000261476 0.006013128
+        0.382535056 0.0
+        0.000821017 0.408203703
+        0.049926556 0.0
+        -0.000258533 0.006196203
       </sigma_s>
       <chi_nu_sigma_f>
-        0.013687612 0.255838918
-        0.000000015 0.000000189
+        0.013877940 0.208179836
+        0.000000015 0.000000160
       </chi_nu_sigma_f>
       <internal_source>
         0.0 0.0
       </internal_source>
     </material>
     <material index='1'
-              name='gap'>
+              name='ifba'>
       <sigma_t>
-        0.000060070 0.000021458
+        0.400687673 18.807866148
       </sigma_t>
       <sigma_s>
-        0.000059744 0.0
-        0.000000396 0.000021460
-        0.000011213 0.0
-        -0.000000063 -0.000000063
+        0.272518929 0.0
+        0.001179693 0.284174375
+        0.038021479 0.0
+        -0.000343355 0.009850593
       </sigma_s>
       <chi_nu_sigma_f>
         0.0 0.0
@@ -48,15 +48,15 @@
       </internal_source>
     </material>
     <material index='2'
-              name='clad'>
+              name='gap'>
       <sigma_t>
-        0.319205599 0.297115812
+        0.000060712 0.000021233
       </sigma_t>
       <sigma_s>
-        0.317083075 0.0
-        0.000287583 0.294003048
-        0.052759371 0.0
-        -0.000078648 0.002146731
+        0.000060487 0.0
+        0.000000400 0.000021243
+        0.000011767 0.0
+        -0.000000079 0.000003495
       </sigma_s>
       <chi_nu_sigma_f>
         0.0 0.0
@@ -67,15 +67,34 @@
       </internal_source>
     </material>
     <material index='3'
-              name='moderator'>
+              name='clad'>
       <sigma_t>
-        0.528320878 1.316352822
+        0.318128762 0.296467308
       </sigma_t>
       <sigma_s>
-        0.486251066 0.000000031
-        0.041923677 1.301429236
-        0.290403747 0.000000031
-        0.018069833 0.523147177
+        0.316009612 0.0
+        0.000284867 0.293736124
+        0.052994156 0.0
+        -0.000078583 0.002164244
+      </sigma_s>
+      <chi_nu_sigma_f>
+        0.0 0.0
+        0.0 0.0
+      </chi_nu_sigma_f>
+      <internal_source>
+        0.0 0.0
+      </internal_source>
+    </material>
+    <material index='4'
+              name='moderator'>
+      <sigma_t>
+        0.589533143 1.404056519
+      </sigma_t>
+      <sigma_s>
+        0.542576514 0.000000034
+        0.046780637 1.389920798
+        0.323899243 0.000000034
+        0.020173486 0.598442391
       </sigma_s>
       <chi_nu_sigma_f>
         0.0 0.0
@@ -96,7 +115,7 @@
   <solid_geometry>
     <dimension>2</dimension>
     <surfaces>
-      <number_of_surfaces>7</number_of_surfaces>
+      <number_of_surfaces>8</number_of_surfaces>
       <surface index='0'
                shape='cylinder'
                type='internal'>
@@ -106,16 +125,22 @@
       <surface index='1'
                shape='cylinder'
                type='internal'>
-        <radius>0.418</radius>
+        <radius>0.4106</radius>
         <origin>0.0 0.0</origin>
       </surface>
       <surface index='2'
                shape='cylinder'
                type='internal'>
-        <radius>0.475</radius>
+        <radius>0.418</radius>
         <origin>0.0 0.0</origin>
       </surface>
       <surface index='3'
+               shape='cylinder'
+               type='internal'>
+        <radius>0.475</radius>
+        <origin>0.0 0.0</origin>
+      </surface>
+      <surface index='4'
                shape='cartesian_plane'
                type='boundary'>
         <surface_dimension>0</surface_dimension>
@@ -123,7 +148,7 @@
         <normal>-1.0</normal>
         <boundary_source>0</boundary_source>
       </surface>
-      <surface index='4'
+      <surface index='5'
                shape='cartesian_plane'
                type='boundary'>
         <surface_dimension>0</surface_dimension>
@@ -131,7 +156,7 @@
         <normal>1.0</normal>
         <boundary_source>0</boundary_source>
       </surface>
-      <surface index='5'
+      <surface index='6'
                shape='cartesian_plane'
                type='boundary'>
         <surface_dimension>1</surface_dimension>
@@ -139,7 +164,7 @@
         <normal>-1.0</normal>
         <boundary_source>0</boundary_source>
       </surface>
-      <surface index='6'
+      <surface index='7'
                shape='cartesian_plane'
                type='boundary'>
         <surface_dimension>1</surface_dimension>
@@ -149,7 +174,7 @@
       </surface>
     </surfaces>
     <regions>
-      <number_of_regions>4</number_of_regions>
+      <number_of_regions>5</number_of_regions>
       <region index='0'
               material='0'>
         <surface_relation surface='0'
@@ -174,34 +199,40 @@
         <surface_relation surface='2'
                           relation='outside'/>
         <surface_relation surface='3'
-                          relation='negative'/>
+                          relation='inside'/>
+      </region>
+      <region index='4'
+              material='4'>
+        <surface_relation surface='3'
+                          relation='outside'/>
         <surface_relation surface='4'
                           relation='negative'/>
         <surface_relation surface='5'
                           relation='negative'/>
         <surface_relation surface='6'
                           relation='negative'/>
+        <surface_relation surface='7'
+                          relation='negative'/>
       </region>
     </regions>
   </solid_geometry>
   <spatial_discretization input_format='galerkin_points'
-                          points_file='pincell_clad_0.4096_0.475_1.26_12_4_32.xml'>
-    <options weighting='weight'
-             flux_file='test_supg.xml.out'
-             flux_path='output solver coefficients'
-             scalar_flux_fraction='1e-8'
+                          points_file='(POINTS_FILE)'>
+    <options weighting='full'
              external_integral_calculation='true'
              supg='true'
              tau_scaling='none'
-             identical_basis_functions='true'>
-      <tau>1.0</tau>
-      <integration_ordinates>16</integration_ordinates>
-      <dimensional_cells>64 64</dimensional_cells>
+             identical_basis_functions='true'
+             output_material='false'
+             output_integrals='false'>
+      <tau>(TAU)</tau>
+      <integration_ordinates>8</integration_ordinates>
+      <dimensional_cells>256 256</dimensional_cells>
     </options>
     <weight_functions>
-      <radius_calculation method='nearest'>
-        <number_of_neighbors>4</number_of_neighbors>
-        <radius_multiplier>3.0</radius_multiplier>
+      <radius_calculation method='coverage'>
+        <number_of_neighbors>(NEIGHBORS)</number_of_neighbors>
+        <radius_multiplier>1.0</radius_multiplier>
       </radius_calculation>
       <meshless_function type='linear_mls'
                          function='wendland11'/>
@@ -213,6 +244,6 @@
           max_inverse_iterations='400'
           max_iterations='20'
           kspace='20'
-          solver_print='1'
-          tolerance='1e-8'/>
+          solver_print='0'
+          tolerance='1e-10'/>
 </input>

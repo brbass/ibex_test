@@ -123,17 +123,17 @@
     </regions>
   </solid_geometry>
   <spatial_discretization input_format='galerkin_points'
-                          points_file='pincell_clad_0.4095_0.475_1.254_10_4_20.xml'>
+                          points_file='pincell_clad_0.4095_0.475_1.254_5_2_10.xml'>
     <options weighting='flux'
-             flux_file='pincell_1g_10_standard.xml.out'
+             flux_file='pincell_1g_10_supg.xml.out'
              flux_path='output solver coefficients'
              external_integral_calculation='true'
-             supg='false'
+             supg='true'
              tau_scaling='none'
              identical_basis_functions='true'>
       <integration_ordinates>16</integration_ordinates>
       <tau>1.0</tau>
-      <dimensional_cells>40 40</dimensional_cells>
+      <dimensional_cells>20 20</dimensional_cells>
     </options>
     <weight_functions>
       <radius_calculation method='nearest'>

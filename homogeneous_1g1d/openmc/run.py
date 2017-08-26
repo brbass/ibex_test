@@ -110,7 +110,7 @@ settings_file.export_to_xml()
 #                   Run OpenMC
 ###############################################################################
 
-openmc.run(threads=4)
+#openmc.run(threads=4)
 
 ###############################################################################
 #                   Post-Processing
@@ -118,4 +118,4 @@ openmc.run(threads=4)
 
 statepoint = openmc.StatePoint('statepoint.{}.h5'.format(batches))
 
-# print(statepoint.k_combined)
+print(statepoint.k_combined)
