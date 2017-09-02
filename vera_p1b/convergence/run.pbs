@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#PBS -N vera_p1e_convergence
+#PBS -N vera_p1b_convergence
 
 #PBS -M brbass@umich.edu
 #PBS -m abe
