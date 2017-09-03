@@ -218,7 +218,7 @@
   </solid_geometry>
   <spatial_discretization input_format='galerkin_points'
                           points_file='(POINTS_FILE)'>
-    <options weighting='full'
+    <options weighting='(WEIGHTING)'
              external_integral_calculation='true'
              supg='true'
              tau_scaling='none'
@@ -226,12 +226,12 @@
              output_material='false'
              output_integrals='false'>
       <tau>(TAU)</tau>
-      <integration_ordinates>8</integration_ordinates>
-      <dimensional_cells>256 256</dimensional_cells>
+      <integration_ordinates>16</integration_ordinates>
+      <dimensional_cells>(INT_CELLS) (INT_CELLS)</dimensional_cells>
     </options>
     <weight_functions>
       <radius_calculation method='coverage'>
-        <number_of_neighbors>(NEIGHBORS)</number_of_neighbors>
+        <number_of_neighbors>8</number_of_neighbors>
         <radius_multiplier>1.0</radius_multiplier>
       </radius_calculation>
       <meshless_function type='linear_mls'
