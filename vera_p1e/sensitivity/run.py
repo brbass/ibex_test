@@ -6,39 +6,49 @@ def run_case(num_procs,
              test_case,
              points_file,
              points_description,
-             integration_cells,
              fileout):
     # Set up data list
     data = {}
-    data["executable"] = "ibex"
+    data["executable"] = "echo"
     data["num_procs"] = num_procs
     data["parameters"] = ["(POINTS_FILE)",
                           "(TAU)",
                           "(WEIGHTING)",
-                          "(INT_CELLS)"]
+                          "(INT_CELLS)",
+                          "(RADIUS)"]
     data["values"] = []
     for tau in [0.0, 0.1, 0.2, 0.5, 1.0]:
         for weighting in ["full"]:
-            data["values"].append([points_file,
-                                   tau,
-                                   weighting,
-                                   integration_cells])
+            for integration_cells in [511, 512, 513, 1024]:
+                radius = 1.0
+                data["values"].append([points_file,
+                                       tau,
+                                       weighting,
+                                       integration_cells,
+                                       radius])
+            for radius in [0.9, 1.0, 1.1]:
+                integration_cells = 512
+                data["values"].append([points_file,
+                                       tau,
+                                       weighting,
+                                       integration_cells,
+                                       radius])
     data["descriptions"] = copy.deepcopy(data["values"])
     for desc in data["descriptions"]:
         desc[0] = points_description
     data["prefix"] = "test"
     data["postfix"] = ".xml"
     data["template_filename"] = "template.xml"
-
+    
     # Run case
     input_filenames = full_run_from_template(data,
-                                             True) # Save input files
+                                             False) # Save input files
     
     # Get output
     for i, input_filename in enumerate(input_filenames):
         try:
             data_out = get_data("{}.out".format(input_filename))
-            for val in [points_description, test_case, integration_cells, data["values"][i][1]]:
+            for val in [points_description, test_case, data["values"][i][1], data["values"][i][3], data["values"][i][4]]:
                 fileout.write("{}\t".format(val))
             for par in ["number_of_moments", "number_of_ordinates", "number_of_points", "weighting", "k_eigenvalue"]:
                 fileout.write("{}\t".format(data_out[par]))
@@ -51,31 +61,13 @@ def run_case(num_procs,
     
 def run():
     # Run cases
-    integration_cells = 512
-    with open("output_scaled.txt", 'a') as fileout:
-        for test_case, num_procs in zip([2, 3, 4, 5, 6, 7, 8], [4, 4, 4, 4, 3, 2, 1]):
-            run_case(num_procs,
+    with open("output_sensitivity.txt", 'a') as fileout:
+        for test_case, num_procs in zip([5, 6], [3, 2]):
+            run_case(num_procs, # num procs
                      test_case,
                      "scaled_pincell_{}.xml".format(test_case),
                      "scaled{}".format(test_case),
-                     integration_cells,
                      fileout)
-    with open("output_square.txt", 'a') as fileout:
-        for test_case, num_procs in zip([1, 2, 3, 4, 5], [4, 4, 4, 3, 1]):
-            run_case(num_procs,
-                     test_case,
-                     "square_{}.xml".format(test_case),
-                     "square{}".format(test_case),
-                     integration_cells,
-                     fileout)
-    with open("output_uniform.txt", 'a') as fileout:
-        for test_case, num_procs in zip([3, 4, 5], [3, 2, 1]):
-            run_case(num_procs,
-                     test_case,
-                     "uniform_pincell_{}.xml".format(test_case),
-                     "uniform{}".format(test_case),
-                     integration_cells,
-                     fileout)
-        
+            
 if __name__ == '__main__':
     run()
