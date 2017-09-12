@@ -8,7 +8,7 @@
     <rule>3</rule>
   </angular_discretization>
   <materials>
-   <number_of_materials>4</number_of_materials>
+   <number_of_materials>5</number_of_materials>
     <material index='0'
               name='fuel'>
       <sigma_t>
@@ -225,12 +225,12 @@
              identical_basis_functions='true'>
       <tau>1.0</tau>
       <integration_ordinates>16</integration_ordinates>
-      <dimensional_cells>64 64</dimensional_cells>
+      <dimensional_cells>256 256</dimensional_cells>
     </options>
     <weight_functions>
-      <radius_calculation method='nearest'>
-        <number_of_neighbors>4</number_of_neighbors>
-        <radius_multiplier>3.0</radius_multiplier>
+      <radius_calculation method='coverage'>
+        <number_of_neighbors>8</number_of_neighbors>
+        <radius_multiplier>1.0</radius_multiplier>
       </radius_calculation>
       <meshless_function type='linear_mls'
                          function='wendland11'/>
