@@ -279,10 +279,10 @@
              output_material='false'
              output_integrals='false'>
       <tau>1.0</tau>
-      <integration_ordinates>16</integration_ordinates>
+      <integration_ordinates>8</integration_ordinates>
       <dimensional_cells>20 20 20</dimensional_cells>
     </options>
-    <dimensional_points>11 11 11</dimensional_points>
+    <dimensional_points>21 21 21</dimensional_points>
     <weight_functions>
       <radius_calculation method='coverage'>
         <number_of_neighbors>10</number_of_neighbors>
@@ -295,7 +295,7 @@
   <problem type='steady_state'/>
   <transport solver='amesos'/>
   <solver type='krylov'
-          max_iterations='200'
+          max_iterations='1000'
           kspace='20'
           solver_print='1'
           tolerance='1e-10'>

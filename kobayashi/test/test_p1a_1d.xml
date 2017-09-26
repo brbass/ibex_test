@@ -134,11 +134,11 @@
              identical_basis_functions='true'
              output_material='false'
              output_integrals='false'>
-      <tau>0.2</tau>
+      <tau>1.0</tau>
       <integration_ordinates>16</integration_ordinates>
-      <dimensional_cells>2000</dimensional_cells>
+      <dimensional_cells>200</dimensional_cells>
     </options>
-    <dimensional_points>1001</dimensional_points>
+    <dimensional_points>41</dimensional_points>
     <weight_functions>
       <radius_calculation method='coverage'>
         <number_of_neighbors>8</number_of_neighbors>
