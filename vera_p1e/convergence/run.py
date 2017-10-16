@@ -1,13 +1,16 @@
 import copy
 from ibex_io import full_run_from_template
+from ibex_io import full_save_from_template
 from ibex_io import get_data
+import sys
 
 def run_case(num_procs,
              test_case,
              points_file,
              points_description,
              integration_cells,
-             fileout):
+             fileout,
+             run = True):
     # Set up data list
     data = {}
     data["executable"] = "ibex"
@@ -31,8 +34,12 @@ def run_case(num_procs,
     data["template_filename"] = "template.xml"
 
     # Run case
-    input_filenames = full_run_from_template(data,
-                                             True) # Save input files
+    if run:
+        input_filenames = full_run_from_template(data,
+                                                 True) # Save input files
+    else:
+        input_filenames = full_save_from_template(data,
+                                                  False) # Save input files
     
     # Get output
     for i, input_filename in enumerate(input_filenames):
@@ -47,26 +54,29 @@ def run_case(num_procs,
             fileout.write("{}".format((data_out["k_eigenvalue"] - 0.772801396)*1e5))
         except:
             print("test {} failed to output data".format(input_filename))
+            print("\t{}".format(sys.exc_info()))
         fileout.write("\n")
     
-def run():
+def run_all(run = True):
     # Run cases
     integration_cells = 1024
     with open("output.txt", 'a') as fileout:
-        # for test_case, num_procs in zip([2, 4, 6, 8, 10, 12], [4, 4, 4, 4, 3, 2]):
-        #     run_case(num_procs,
-        #              test_case,
-        #              "scaled_pincell_{}.xml".format(test_case),
-        #              "scaled{}".format(test_case),
-        #              integration_cells,
-        #              fileout)
+        for test_case, num_procs in zip([2, 4, 6, 8, 10, 12], [4, 4, 4, 4, 3, 2]):
+            run_case(num_procs,
+                     test_case,
+                     "scaled_pincell_{}.xml".format(test_case),
+                     "scaled{}".format(test_case),
+                     integration_cells,
+                     fileout,
+                     run)
         for test_case, num_procs in zip([4, 5, 6, 7], [4, 4, 4, 2]):
             run_case(num_procs,
                      test_case,
                      "square_{}.xml".format(test_case),
                      "square{}".format(test_case),
                      integration_cells,
-                     fileout)
+                     fileout,
+                     run)
         
 if __name__ == '__main__':
-    run()
+    run_all(False)

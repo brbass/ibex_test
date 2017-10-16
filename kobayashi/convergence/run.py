@@ -2,7 +2,6 @@ import copy
 from ibex_io import full_run_from_template
 from ibex_io import full_save_from_template
 from ibex_io import get_data
-import glob
 import numpy as np
 import sys
 
