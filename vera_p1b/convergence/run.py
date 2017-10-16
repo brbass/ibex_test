@@ -10,15 +10,15 @@ def run_case(num_procs,
              fileout):
     # Set up data list
     data = {}
-    data["executable"] = "echo"
+    data["executable"] = "ibex"
     data["num_procs"] = num_procs
     data["parameters"] = ["(POINTS_FILE)",
                           "(TAU)",
                           "(WEIGHTING)",
                           "(INT_CELLS)"]
     data["values"] = []
-    for tau in [0.0, 0.1, 0.2, 0.5, 1.0]:
-        for weighting in ["full", "flat", "basis"]:
+    for tau in [1.0]:
+        for weighting in ["full", "basis"]:
             data["values"].append([points_file,
                                    tau,
                                    weighting,
@@ -32,7 +32,7 @@ def run_case(num_procs,
 
     # Run case
     input_filenames = full_run_from_template(data,
-                                             False) # Save input files
+                                             True) # Save input files
     
     # Get output
     for i, input_filename in enumerate(input_filenames):
@@ -44,37 +44,27 @@ def run_case(num_procs,
                 fileout.write("{}\t".format(data_out[par]))
             for par in ["spatial_initialization", "sweep_initialization", "solve"]:
                 fileout.write("{}\t".format(data_out["timing"][par]))
-            fileout.write("{}".format((data_out["k_eigenvalue"] - 1.18048959)*1e5))
+            fileout.write("{}".format((data_out["k_eigenvalue"] - 0.772801396)*1e5))
         except:
             print("test {} failed to output data".format(input_filename))
         fileout.write("\n")
     
 def run():
     # Run cases
-    integration_cells = 256
-    with open("output_scaled.txt", 'a') as fileout:
-        for test_case, num_procs in zip([2, 3, 4, 5, 6, 7, 8], [4, 4, 4, 4, 3, 2, 1]):
+    integration_cells = 512
+    with open("output.txt", 'a') as fileout:
+        for test_case, num_procs in zip([2, 4, 6, 8, 10, 12], [4, 4, 4, 4, 3, 2]):
             run_case(num_procs,
                      test_case,
                      "scaled_pincell_{}.xml".format(test_case),
                      "scaled{}".format(test_case),
                      integration_cells,
                      fileout)
-            
-    with open("output_square.txt", 'a') as fileout:
-        for test_case, num_procs in zip([1, 2, 3, 4, 5], [4, 4, 4, 3, 1]):
+        for test_case, num_procs in zip([4, 5, 6, 7], [4, 4, 4, 2]):
             run_case(num_procs,
                      test_case,
                      "square_{}.xml".format(test_case),
                      "square{}".format(test_case),
-                     integration_cells,
-                     fileout)
-    with open("output_uniform.txt", 'a') as fileout:
-        for test_case, num_procs in zip([3, 4, 5], [3, 2, 1]):
-            run_case(num_procs,
-                     test_case,
-                     "uniform_pincell_{}.xml".format(test_case),
-                     "uniform{}".format(test_case),
                      integration_cells,
                      fileout)
         

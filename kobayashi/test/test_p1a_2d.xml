@@ -200,9 +200,9 @@
              output_integrals='false'>
       <tau>1.0</tau>
       <integration_ordinates>16</integration_ordinates>
-      <dimensional_cells>40 40</dimensional_cells>
+      <dimensional_cells>160 160</dimensional_cells>
     </options>
-    <dimensional_points>21 21</dimensional_points>
+    <dimensional_points>161 161</dimensional_points>
     <weight_functions>
       <radius_calculation method='coverage'>
         <number_of_neighbors>8</number_of_neighbors>
@@ -213,12 +213,13 @@
     </weight_functions>
   </spatial_discretization>
   <problem type='steady_state'/>
-  <transport solver='amesos'/>
+  <transport solver='aztec'
+             tolerance='1e-8'/>
   <solver type='krylov'
           max_iterations='200'
           kspace='20'
           solver_print='1'
-          tolerance='1e-10'>
+          tolerance='1e-8'>
     <value type='centers'/>
     <value type='points'>
       <number_of_points>10</number_of_points>

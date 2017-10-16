@@ -30,7 +30,7 @@
         1.0e-4
       </sigma_t>
       <sigma_s>
-        0.0
+        0.5e-4
       </sigma_s>
       <chi_nu_sigma_f>
         0.0
@@ -301,7 +301,7 @@
           max_iterations='1000'
           kspace='20'
           solver_print='1'
-          tolerance='1e-10'>
+          tolerance='1e-8'>
     <value type='centers'/>
     <value type='points'>
       <number_of_points>10</number_of_points>
