@@ -1,6 +1,8 @@
 import numpy as np
 from matplotlib import pyplot as plt
 from ibex_io import get_data
+from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes
+from mpl_toolkits.axes_grid1.inset_locator import mark_inset
 
 def plot_convergence():
     # Get convergence data
@@ -47,16 +49,15 @@ def plot_eigenvector(fileout,
     phi = data["phi"]
     points = data["points"]
     
-    plt.figure()
     for g in range(num_groups):
+        fig, ax = plt.subplots()
         plt.tripcolor(points[:,0], points[:,1], phi[:,0, g], shading='gouraud')
         plt.xlabel("x")
         plt.ylabel("y")
         plt.colorbar(label="scalar flux")
         plt.axis('equal')
-        plt.tight_layout()
         plt.savefig("eigenvector_vera1b_{}_{}.pdf".format(description, g), bbox_inches='tight')
-        #plt.show()
+        plt.show()
         plt.close()
     
 if __name__ == '__main__':
