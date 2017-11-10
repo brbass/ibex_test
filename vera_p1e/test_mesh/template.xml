@@ -235,7 +235,7 @@
     </options>
     <weight_functions>
       <radius_calculation method='coverage'>
-        <number_of_neighbors>12</number_of_neighbors>
+        <number_of_neighbors>8</number_of_neighbors>
         <radius_multiplier>1.0</radius_multiplier>
       </radius_calculation>
       <meshless_function type='linear_mls'
@@ -249,11 +249,11 @@
              tolerance='1e-10'
              max_iterations='2000'/>
   <solver type='krylov'
-          max_inverse_iterations='500'
-          max_iterations='10'
+          explicit_inverse='false'
+          max_iterations='50'
           kspace='20'
           solver_print='1'
-          tolerance='1e-8'>
+          eigenvalue_tolerance='1e-8'>
     <value type='centers'/>
   </solver>
 </input>
