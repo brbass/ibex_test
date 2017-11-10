@@ -74,6 +74,7 @@ def get_points(num_radii,
             pos = -l2 + delta_l * i
             points.append([pos, sign * l2])
         for i in range(1, num_points_l - 1):
+            pos = -l2 + delta_l * i
             points.append([sign * l2, pos])
             
     # Return result
@@ -105,7 +106,7 @@ def output_points(num_radii,
                                xml_declaration=True)
     
     # Plot if desired
-    if False:
+    if True:
         plt.figure()
         plt.scatter(points[:, 0], points[:, 1], s=2)
         plt.axes().set_aspect('equal')
