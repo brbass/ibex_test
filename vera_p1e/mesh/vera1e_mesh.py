@@ -16,8 +16,6 @@ def get_points(num_radii,
     if a > 2:
         print("delta multiplication factor large: a = ", a)
     ind_add = int(np.ceil(l2 / max_delta))
-    print(initial_delta * a)
-    print(initial_delta * a * a)
     
     # Get points and spacing for each radius
     points_ifba = [r0, r1]
@@ -48,9 +46,6 @@ def get_points(num_radii,
         spacing_r.append((delta_r[i + 1] + delta_r[i - 1]) / 2)
     spacing_r.append(delta_r[-1])
 
-    for i in zip(points_r, delta_r, spacing_r):
-        print(i)
-    
     # Get full set of points
     points = []
     for i, (r, spacing) in enumerate(zip(points_r, spacing_r)):
@@ -76,9 +71,11 @@ def get_points(num_radii,
     delta_l = l / num_intervals_l
     for sign in [-1, 1]:
         for i in range(num_points_l):
-            points.append([sign * l2, -l2 + delta_l * i])
-            points.append([-l2 + delta_l * i, sign * l2])
-
+            pos = -l2 + delta_l * i
+            points.append([pos, sign * l2])
+        for i in range(1, num_points_l - 1):
+            points.append([sign * l2, pos])
+            
     # Return result
     num_points = len(points)
     points = np.array(points)
@@ -100,6 +97,7 @@ def output_points(num_radii,
                       points)
     et.SubElement(node, "num_radii").text = str(num_radii)
     et.SubElement(node, "max_delta").text = str(max_delta)
+    et.SubElement(node, "initial_delta").text = str(initial_delta)
     
     # Output xml node
     et.ElementTree(node).write(output_path,
@@ -107,7 +105,7 @@ def output_points(num_radii,
                                xml_declaration=True)
     
     # Plot if desired
-    if True:
+    if False:
         plt.figure()
         plt.scatter(points[:, 0], points[:, 1], s=2)
         plt.axes().set_aspect('equal')
