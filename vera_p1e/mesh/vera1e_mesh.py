@@ -5,21 +5,24 @@ def get_points(num_radii,
                max_delta,
                initial_delta):
     # Set parameters
+    initial_delta = np.abs(initial_delta)
     r0 = 0.4101 - initial_delta / 2
     r1 = 0.4101 + initial_delta / 2
     r = 0.0
-    dr0 = -np.abs(initial_delta)
+    dr0 = -initial_delta
     a = np.power((r - r0) / dr0, 1. / (num_radii - 1.))
     l = 1.26
     l2 = l / 2
     if a > 2:
         print("delta multiplication factor large: a = ", a)
     ind_add = int(np.ceil(l2 / max_delta))
+    print(initial_delta * a)
+    print(initial_delta * a * a)
     
     # Get points and spacing for each radius
-    points_ifba = [0.4096, 0.4106]
-    delta_ifba = [0.001, 0.001]
-    delta_fuel = [min(max_delta, np.abs(dr0 * (np.power(a, n - 1) - np.power(a, n - 2)))) for n in range(2, num_radii + 2 + ind_add)]
+    points_ifba = [r0, r1]
+    delta_ifba = [initial_delta, initial_delta]
+    delta_fuel = [min(max_delta, initial_delta * np.power(a, n + 1)) for n in range(0, num_radii + ind_add)]
     points_fuel = [r0 - delta_fuel[0]]
     for i in range(num_radii + ind_add - 1):
         point = points_fuel[-1] - delta_fuel[i + 1]
@@ -28,7 +31,7 @@ def get_points(num_radii,
                 point = 0.
             points_fuel.append(point)
     delta_fuel = delta_fuel[0:len(points_fuel)]
-    delta_mod = [min(max_delta, np.abs(dr0 * (np.power(a, n - 1) - np.power(a, n - 2)))) for n in range(2, num_radii + 2 + ind_add)]
+    delta_mod = [min(max_delta, initial_delta * np.power(a, n + 1)) for n in range(0, num_radii + ind_add)]
     points_mod = [r1 + delta_mod[0]]
     for i in range(num_radii + ind_add - 1):
         point = points_mod[-1] + delta_mod[i + 1]
@@ -40,14 +43,18 @@ def get_points(num_radii,
     indices = np.argsort(points_r)
     points_r = points_r[indices]
     delta_r = delta_r[indices]
+    spacing_r = [delta_r[0]]
+    for i in range(1, len(points_r) - 1):
+        spacing_r.append((delta_r[i + 1] + delta_r[i - 1]) / 2)
+    spacing_r.append(delta_r[-1])
+
+    for i in zip(points_r, delta_r, spacing_r):
+        print(i)
     
     # Get full set of points
     points = []
-    for i, (r, delta) in enumerate(zip(points_r, delta_r)):
-        # if i == 0:
-        #     points_temp = [[0., 0.]]
-        # else:
-        points_temp = get_ring_points(r, delta)
+    for i, (r, spacing) in enumerate(zip(points_r, spacing_r)):
+        points_temp = get_ring_points(r, spacing)
         for point_temp in points_temp:
             points.append(point_temp)
 
@@ -100,7 +107,7 @@ def output_points(num_radii,
                                xml_declaration=True)
     
     # Plot if desired
-    if False:
+    if True:
         plt.figure()
         plt.scatter(points[:, 0], points[:, 1], s=2)
         plt.axes().set_aspect('equal')
