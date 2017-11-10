@@ -2,12 +2,13 @@ from mesh_functions import *
 import numpy as np
 
 def get_points(num_radii,
-               max_delta):
+               max_delta,
+               initial_delta):
     # Set parameters
-    r0 = 0.4096
-    r1 = 0.4106
+    r0 = 0.4101 - initial_delta / 2
+    r1 = 0.4101 + initial_delta / 2
     r = 0.0
-    dr0 = -0.001
+    dr0 = -np.abs(initial_delta)
     a = np.power((r - r0) / dr0, 1. / (num_radii - 1.))
     l = 1.26
     l2 = l / 2
@@ -77,12 +78,14 @@ def get_points(num_radii,
     return num_points, points
 
 def output_points(num_radii,
-                  max_delta):
+                  max_delta,
+                  initial_delta):
     # Get points and output path
-    num_points, points = get_points(num_radii, max_delta)
+    num_points, points = get_points(num_radii, max_delta, initial_delta)
     print("mesh has {} points".format(num_points))
-    output_path = "vera1e_mesh_{}_{}.xml".format(num_radii,
-                                                 max_delta)
+    output_path = "vera1e_mesh_{}_{}_{}.xml".format(num_radii,
+                                                    max_delta,
+                                                    initial_delta)
 
     # Get node and add input data
     node = xml_points(2, # dimension
@@ -97,7 +100,7 @@ def output_points(num_radii,
                                xml_declaration=True)
     
     # Plot if desired
-    if True:
+    if False:
         plt.figure()
         plt.scatter(points[:, 0], points[:, 1], s=2)
         plt.axes().set_aspect('equal')
@@ -105,10 +108,11 @@ def output_points(num_radii,
         
     
 if __name__ == '__main__':
-    if (len(sys.argv) != 3):
-        print("vera1e_mesh.py [num_radii max_delta]")
+    if (len(sys.argv) != 4):
+        print("vera1e_mesh.py [num_radii max_delta initial_delta]")
         sys.exit()
     num_radii = int(sys.argv[1])
     max_delta = float(sys.argv[2])
-    output_points(num_radii, max_delta)
+    initial_delta = float(sys.argv[3])
+    output_points(num_radii, max_delta, initial_delta)
 
