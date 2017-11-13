@@ -218,7 +218,7 @@
     </regions>
   </solid_geometry>
   <spatial_discretization input_format='galerkin_points'
-                          points_file='(POINTS_FILE)'>
+                          points_file='vera1e_mesh_18_0.00625_0.00125.xml'>
     <options weighting='full'
              external_integral_calculation='true'
              supg='true'
@@ -227,15 +227,15 @@
              output_material='false'
              output_integrals='false'
              adaptive_quadrature='true'
-             minimum_radius_ordinates='32'
-             maximum_integration_ordinates='512'>
-      <tau>1.0</tau>
+             minimum_radius_ordinates='(ORDINATES)'
+             maximum_integration_ordinates='1024'>
+      <tau>(TAU)</tau>
       <integration_ordinates>16</integration_ordinates>
-      <dimensional_cells>(CELLS) (CELLS)</dimensional_cells>
+      <dimensional_cells>256 256</dimensional_cells>
     </options>
     <weight_functions>
       <radius_calculation method='coverage'>
-        <number_of_neighbors>8</number_of_neighbors>
+        <number_of_neighbors>(NEIGHBORS)</number_of_neighbors>
         <radius_multiplier>1.0</radius_multiplier>
       </radius_calculation>
       <meshless_function type='linear_mls'
@@ -244,7 +244,7 @@
   </spatial_discretization>
   <problem type='eigenvalue'/>
   <transport solver='aztec_ifpack'
-             level_of_fill='2.0'
+             level_of_fill='(FILL)'
              drop_tolerance='1e-12'
              tolerance='1e-10'
              max_iterations='2000'/>

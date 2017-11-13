@@ -218,20 +218,20 @@
     </regions>
   </solid_geometry>
   <spatial_discretization input_format='galerkin_points'
-                          points_file='(POINTS_FILE)'>
+                          points_file='vera1e_mesh_12_0.05_0.01.xml'>
     <options weighting='full'
              external_integral_calculation='true'
              supg='true'
-             tau_scaling='none'
+             tau_scaling='(TAU_METHOD)'
              identical_basis_functions='true'
              output_material='false'
              output_integrals='false'
              adaptive_quadrature='true'
-             minimum_radius_ordinates='32'
+             minimum_radius_ordinates='64'
              maximum_integration_ordinates='512'>
-      <tau>1.0</tau>
+      <tau>(TAU)</tau>
       <integration_ordinates>16</integration_ordinates>
-      <dimensional_cells>(CELLS) (CELLS)</dimensional_cells>
+      <dimensional_cells>32 32</dimensional_cells>
     </options>
     <weight_functions>
       <radius_calculation method='coverage'>

@@ -17,7 +17,5 @@ print(keff)
 # Tally results
 tally = sp.get_tally(name='flux')
 print(tally)
-flux = tally.get_slice(scores=['flux-Y0,0'])
-print(flux)
-print(len(flux.mean))
-
+flux = tally.get_slice(scores=['flux-Y0,0'])# 'flux-Y1,-1', 'flux-Y1,0', 'flux-Y1,1'
+print(flux.mean)

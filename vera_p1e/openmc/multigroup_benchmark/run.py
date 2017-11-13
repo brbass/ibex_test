@@ -100,15 +100,19 @@ s_fuel = openmc.ZCylinder(surface_id=1, x0=0, y0=0, R=0.4096, name='fuel')
 s_ifba = openmc.ZCylinder(surface_id=2, x0=0, y0=0, R=0.4106, name='ifba')
 s_gap = openmc.ZCylinder(surface_id=3, x0=0, y0=0, R=0.418, name='gap')
 s_clad = openmc.ZCylinder(surface_id=4, x0=0, y0=0, R=0.475, name='clad')
-s_left = openmc.XPlane(surface_id=5, x0=-0.63, name='left')
-s_right = openmc.XPlane(surface_id=6, x0=0.63, name='right')
-s_bot = openmc.YPlane(surface_id=7, y0=-0.63, name='bottom')
-s_top = openmc.YPlane(surface_id=8, y0=0.63, name='top')
+s_xmin = openmc.XPlane(surface_id=5, x0=-0.63, name='xmin')
+s_xmax = openmc.XPlane(surface_id=6, x0=0.63, name='xmax')
+s_ymin = openmc.YPlane(surface_id=7, y0=-0.63, name='ymin')
+s_ymax = openmc.YPlane(surface_id=8, y0=0.63, name='ymax')
+s_zmin = openmc.ZPlane(surface_id=9, z0=-0.63, name='zmin')
+s_zmax = openmc.ZPlane(surface_id=10, z0=0.63, name='zmax')
 
-s_left.boundary_type = 'reflective'
-s_right.boundary_type = 'reflective'
-s_top.boundary_type = 'reflective'
-s_bot.boundary_type = 'reflective'
+s_xmin.boundary_type = 'reflective'
+s_xmax.boundary_type = 'reflective'
+s_ymin.boundary_type = 'reflective'
+s_ymax.boundary_type = 'reflective'
+s_zmin.boundary_type = 'reflective'
+s_zmax.boundary_type = 'reflective'
 
 c_fuel = openmc.Cell(cell_id=1, name='fuel')
 c_ifba = openmc.Cell(cell_id=2, name='ifba')
@@ -116,11 +120,11 @@ c_gap = openmc.Cell(cell_id=3, name='gap')
 c_clad = openmc.Cell(cell_id=4, name='clad')
 c_mod = openmc.Cell(cell_id=5, name='mod')
 
-c_fuel.region = -s_fuel
-c_ifba.region = +s_fuel & -s_ifba
-c_gap.region = +s_ifba & -s_gap
-c_clad.region = +s_gap & -s_clad
-c_mod.region = +s_clad & +s_left & -s_right & +s_bot & -s_top
+c_fuel.region = -s_fuel & +s_zmin & -s_zmax
+c_ifba.region = +s_fuel & -s_ifba & +s_zmin & -s_zmax
+c_gap.region = +s_ifba & -s_gap & +s_zmin & -s_zmax
+c_clad.region = +s_gap & -s_clad & +s_zmin & -s_zmax
+c_mod.region = +s_clad & +s_xmin & -s_xmax & +s_ymin & -s_ymax & +s_zmin & -s_zmax
 
 c_fuel.fill = m_fuel
 c_ifba.fill = m_ifba
@@ -134,6 +138,27 @@ root.add_cells([c_fuel, c_ifba, c_gap, c_clad, c_mod])
 geometry = openmc.Geometry(root)
 geometry.export_to_xml()
 
+###########
+# Tallies #
+###########
+
+mesh = openmc.Mesh()
+mesh.dimension = [20, 20, 1]
+mesh.lower_left = [-0.63, -0.63, -0.63]
+mesh.upper_right = [0.63, 0.63, 0.63]
+
+mesh_filter = openmc.MeshFilter(mesh)
+
+energy_filter = openmc.EnergyFilter(groups.group_edges)
+
+tally = openmc.Tally(name='flux')
+tally.filters = [mesh_filter, energy_filter]
+tally.scores = ['flux-Y1', 'fission']
+
+tallies_file = openmc.Tallies()
+tallies_file.append(tally)
+tallies_file.export_to_xml()
+
 ############
 # Settings #
 ############
@@ -142,7 +167,7 @@ settings_file = openmc.Settings()
 settings_file.energy_mode = "multi-group"
 settings_file.batches = 200
 settings_file.inactive = 50
-settings_file.particles = int(1e7)
+settings_file.particles = int(1e6)
 
 bounds = [-0.42, -0.42, -0.42, 0.42, 0.42, 0.42]
 uniform_dist = openmc.stats.Box(bounds[:3], bounds[3:])

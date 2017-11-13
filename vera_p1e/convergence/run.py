@@ -61,7 +61,7 @@ def run_all(run = True):
     # Run cases
     integration_cells = 1024
     with open("output.txt", 'a') as fileout:
-        for test_case, num_procs in zip([2, 4, 6, 8, 10, 12], [4, 4, 4, 4, 3, 2]):
+        for test_case, num_procs in zip([12, 10, 8, 6, 4, 2], [2, 3, 4, 4, 4, 4]): #zip([2, 4, 6, 8, 10, 12], [4, 4, 4, 4, 3, 2]):
             run_case(num_procs,
                      test_case,
                      "scaled_pincell_{}.xml".format(test_case),

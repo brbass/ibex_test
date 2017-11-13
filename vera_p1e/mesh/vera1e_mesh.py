@@ -13,8 +13,7 @@ def get_points(num_radii,
     a = np.power((r - r0) / dr0, 1. / (num_radii - 1.))
     l = 1.26
     l2 = l / 2
-    if a > 2:
-        print("delta multiplication factor large: a = ", a)
+    print("delta multiplication factor: a = ", a)
     ind_add = int(np.ceil(l2 / max_delta))
     
     # Get points and spacing for each radius
@@ -106,12 +105,11 @@ def output_points(num_radii,
                                xml_declaration=True)
     
     # Plot if desired
-    if True:
+    if False:
         plt.figure()
         plt.scatter(points[:, 0], points[:, 1], s=2)
         plt.axes().set_aspect('equal')
         plt.show()
-        
     
 if __name__ == '__main__':
     if (len(sys.argv) != 4):

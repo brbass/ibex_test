@@ -11,16 +11,14 @@ def run_all(run = True):
         data["executable"] = "ibex"
     else:
         data["executable"] = "echo"
-    data["num_procs"] = 4
-    data["parameters"] = ["(POINTS_FILE)", "(CELLS)"]
-    mesh_params = [[18, 0.00625, 0.00125, 256],
-                   [16, 0.0125, 0.0025, 128],
-                   [14, 0.025, 0.005, 64],
-                   [12, 0.05, 0.01, 32]]
-    data["values"] = [["vera1e_mesh_{}_{}_{}.xml".format(i, j, k),
-                       str(l)] for (i, j, k, l) in mesh_params]
-    data["descriptions"] = [["{}_{}_{}".format(i, j, k),
-                             str(l)] for (i, j, k, l) in mesh_params]
+    data["num_procs"] = 3
+    data["parameters"] = ["(ORDINATES)", "(FILL)", "(NEIGHBORS)", "(TAU)"]
+    data["values"] = [[32, 1.0, 8, 1.0],
+                      [32, 1.0, 8, 2.0],
+                      [32, 1.0, 10, 1.0],
+                      [32, 2.0, 8, 1.0],
+                      [64, 1.0, 8, 1.0]]
+    data["descriptions"] = data["values"]
     data["prefix"] = "test"
     data["postfix"] = ".xml"
     data["template_filename"] = "template.xml"
