@@ -4,6 +4,7 @@ from ibex_io import full_save_from_template
 from ibex_io import get_data
 import numpy as np
 import sys
+import math
 
 def run_case(num_procs,
              num_points,
@@ -19,8 +20,8 @@ def run_case(num_procs,
                           "(INT_CELLS)",
                           "(SCA_INT)"]
     data["values"] = []
-    integration_cells = num_points - 1
-    for tau in [1.0, 0.5]:
+    integration_cells = int(math.ceil((num_points - 1)/10.0)) * 10
+    for tau in [1.0]:
         for weighting in ["basis", "full"]:
             for sca_int in [0, 5]:
                 data["values"].append([num_points,
@@ -90,11 +91,12 @@ def run_case(num_procs,
 def run_all(run = True):
     # Run cases
     with open("output.txt", 'a') as fileout:
-        for num_points, num_procs in zip([11, 21, 31, 41], [4, 4, 2, 1]):
+        #for num_points, num_procs in zip([11, 21, 31, 41], [4, 4, 2, 1]):
+        for num_points, num_procs in zip([16, 26, 36, 40], [4, 4, 1, 1]):
             run_case(num_procs, # num procs
                      num_points,
                      fileout,
                      run)
             
 if __name__ == '__main__':
-    run_all(False)
+    run_all(True)
