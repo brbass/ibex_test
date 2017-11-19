@@ -9,7 +9,7 @@ def get_parameters():
     # Get sets of points and cells
     point_sets = []
     cell_sets = []
-    for xpts in range(10, 29, 2):
+    for xpts in range(10, 34, 2):
         ypts = int(np.rint(xpts * 1.2))
         zpts = int(np.rint(xpts * 1.5))
         point_sets.append([xpts, ypts, zpts])

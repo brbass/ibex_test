@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<input type='transport'>
+<input type='transport'
+       print='true'>
   <energy_discretization>
     <number_of_groups>1</number_of_groups>
   </energy_discretization>
@@ -62,7 +63,7 @@
                shape='cartesian_plane'
                type='boundary'>
         <surface_dimension>0</surface_dimension>
-        <position>-20.2284</position>
+        <position>-10.1142</position>
         <normal>-1.0</normal>
         <boundary_source>0</boundary_source>
       </surface>
@@ -70,7 +71,7 @@
                shape='cartesian_plane'
                type='boundary'>
         <surface_dimension>0</surface_dimension>
-        <position>20.2284</position>
+        <position>10.1142</position>
         <normal>1.0</normal>
         <boundary_source>0</boundary_source>
       </surface>
@@ -78,7 +79,7 @@
                shape='cartesian_plane'
                type='boundary'>
         <surface_dimension>1</surface_dimension>
-        <position>-24.2741</position>
+        <position>-12.1371</position>
         <normal>-1.0</normal>
         <boundary_source>0</boundary_source>
       </surface>
@@ -86,7 +87,7 @@
                shape='cartesian_plane'
                type='boundary'>
         <surface_dimension>1</surface_dimension>
-        <position>24.2741</position>
+        <position>12.1371</position>
         <normal>1.0</normal>
         <boundary_source>0</boundary_source>
       </surface>
@@ -94,7 +95,7 @@
                shape='cartesian_plane'
                type='boundary'>
         <surface_dimension>2</surface_dimension>
-        <position>-30.3426</position>
+        <position>-15.1713</position>
         <normal>-1.0</normal>
         <boundary_source>0</boundary_source>
       </surface>
@@ -102,7 +103,7 @@
                shape='cartesian_plane'
                type='boundary'>
         <surface_dimension>2</surface_dimension>
-        <position>30.3426</position>
+        <position>15.1713</position>
         <normal>1.0</normal>
         <boundary_source>0</boundary_source>
       </surface>
@@ -173,9 +174,9 @@
            adaptive_quadrature='false'
            integration_ordinates='8'>
       <limits>
-        -20.2284 20.2284
-        -24.2741 24.2741
-        -30.3426 30.3426
+        -10.1142 10.1142
+        -12.1371 12.1371
+        -15.1713 15.1713
       </limits>
       <dimensional_cells>20 24 30</dimensional_cells>
     </value>

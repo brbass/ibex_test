@@ -104,8 +104,8 @@ s_xmin = openmc.XPlane(surface_id=5, x0=-0.63, name='xmin')
 s_xmax = openmc.XPlane(surface_id=6, x0=0.63, name='xmax')
 s_ymin = openmc.YPlane(surface_id=7, y0=-0.63, name='ymin')
 s_ymax = openmc.YPlane(surface_id=8, y0=0.63, name='ymax')
-s_zmin = openmc.ZPlane(surface_id=9, z0=-0.63, name='zmin')
-s_zmax = openmc.ZPlane(surface_id=10, z0=0.63, name='zmax')
+s_zmin = openmc.ZPlane(surface_id=9, z0=-6300, name='zmin')
+s_zmax = openmc.ZPlane(surface_id=10, z0=6300, name='zmax')
 
 s_xmin.boundary_type = 'reflective'
 s_xmax.boundary_type = 'reflective'
@@ -142,22 +142,22 @@ geometry.export_to_xml()
 # Tallies #
 ###########
 
-# mesh = openmc.Mesh()
-# mesh.dimension = [20, 20, 1]
-# mesh.lower_left = [-0.63, -0.63, -0.63]
-# mesh.upper_right = [0.63, 0.63, 0.63]
+mesh = openmc.Mesh()
+mesh.dimension = [100, 100, 1]
+mesh.lower_left = [-0.63, -0.63, -6300]
+mesh.upper_right = [0.63, 0.63, 6300]
 
-# mesh_filter = openmc.MeshFilter(mesh)
+mesh_filter = openmc.MeshFilter(mesh)
 
-# energy_filter = openmc.EnergyFilter(groups.group_edges)
+energy_filter = openmc.EnergyFilter(groups.group_edges)
 
-# tally = openmc.Tally(name='flux')
-# tally.filters = [mesh_filter, energy_filter]
-# tally.scores = ['flux-Y1', 'fission']
+tally = openmc.Tally(name='flux')
+tally.filters = [mesh_filter, energy_filter]
+tally.scores = ['flux-Y1', 'fission']
 
-# tallies_file = openmc.Tallies()
-# tallies_file.append(tally)
-# tallies_file.export_to_xml()
+tallies_file = openmc.Tallies()
+tallies_file.append(tally)
+tallies_file.export_to_xml()
 
 ############
 # Settings #
@@ -167,7 +167,7 @@ settings_file = openmc.Settings()
 settings_file.energy_mode = "multi-group"
 settings_file.batches = 200
 settings_file.inactive = 50
-settings_file.particles = int(1e7)
+settings_file.particles = int(1e5)
 
 bounds = [-0.42, -0.42, -0.42, 0.42, 0.42, 0.42]
 uniform_dist = openmc.stats.Box(bounds[:3], bounds[3:])

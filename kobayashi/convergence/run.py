@@ -6,47 +6,66 @@ import numpy as np
 import sys
 import math
 
+def get_parameters():
+    # Get sets of points and cells
+    parameters = []
+    procs = []
+    for weighting in ["full", "basis"]:
+        for sca_int in [0, 5]:
+            point_cases = [10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 36, 40]
+            for points in point_cases:
+                num_points = np.power(points, 3)
+                mem = num_points * 0.0012
+                proc = int(np.floor(100./mem))
+                if proc < 1:
+                    print("case with {} points can't run with 0 procs".format(points))
+                else:
+                    if proc > 4:
+                        proc = 4
+                    cells = int(math.ceil((points - 1)/10.0))*10
+                    parameters.append([points, cells, sca_int, weighting])
+                    procs.append(proc)
+    proc_cases = np.unique(procs)
+    data = []
+    for i, proc in enumerate(proc_cases):
+        local_data = []
+        for local_proc, parameter in zip(procs, parameters):
+            if local_proc == proc:
+                local_data.append(parameter)
+        data.append(local_data)
+        
+    return proc_cases, data
+
 def run_case(num_procs,
-             num_points,
+             parameters,
              fileout,
              run = True):
     # Set up data list
     data = {}
-    data["executable"] = "ibex"
+    if run:
+        data["executable"] = "ibex"
+    else:
+        data["executable"] = "echo"
     data["num_procs"] = num_procs
-    data["parameters"] = ["(NUM_POINTS)",
-                          "(TAU)",
-                          "(WEIGHTING)",
-                          "(INT_CELLS)",
-                          "(SCA_INT)"]
-    data["values"] = []
-    integration_cells = int(math.ceil((num_points - 1)/10.0)) * 10
-    for tau in [1.0]:
-        for weighting in ["basis", "full"]:
-            for sca_int in [0, 5]:
-                data["values"].append([num_points,
-                                       tau,
-                                       weighting,
-                                       integration_cells,
-                                       sca_int])
+    data["parameters"] = ["(POINTS)",
+                          "(CELLS)",
+                          "(SCA_INT)",
+                          "(WEIGHTING)"]
+    data["values"] = parameters
     data["descriptions"] = copy.deepcopy(data["values"])
     for desc in data["descriptions"]:
-        if desc[4] == 0:
-            desc[4] = "abs"
+        if desc[2] == 0:
+            desc[2] = "abs"
         else:
-            desc[4] = "sca"
+            desc[2] = "sca"
     data["prefix"] = "test"
     data["postfix"] = ".xml"
     data["template_filename"] = "template.xml"
     
     # Run case
-    if run:
-        input_filenames = full_run_from_template(data,
-                                                 True) # Save input files
-    else:
-        input_filenames = full_save_from_template(data,
-                                                  False) # Save input files
-        
+    input_filenames = full_run_from_template(data,
+                                             True) # Save input files
+    
     # Get output
     for i, input_filename in enumerate(input_filenames):
         try:
@@ -55,7 +74,7 @@ def run_case(num_procs,
             data_out = get_data(output_filename)
             
             # Get errors
-            phi_trunc = np.delete(data_out["phi1"], 19)
+            phi_trunc = data_out["phi1"]
             if data["values"][i][4] == 0:
                 phi_bench = [5.95659, 1.37185, 5.00871e-1, 2.52429e-1, 1.50260e-1,
                              5.95286e-2, 1.53283e-2, 4.17689e-3, 1.18533e-3, 3.46846e-4,
@@ -90,11 +109,11 @@ def run_case(num_procs,
         
 def run_all(run = True):
     # Run cases
+    procs, data_cases = get_parameters()
     with open("output.txt", 'a') as fileout:
-        #for num_points, num_procs in zip([11, 21, 31, 41], [4, 4, 2, 1]):
-        for num_points, num_procs in zip([16, 26, 36, 40], [4, 4, 1, 1]):
-            run_case(num_procs, # num procs
-                     num_points,
+        for proc, local_data in zip(procs, data_cases):
+            run_case(proc, # num procs
+                     local_data,
                      fileout,
                      run)
             

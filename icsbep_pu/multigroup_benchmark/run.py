@@ -53,7 +53,7 @@ materials_file.export_to_xml()
 rabc = np.power([1./4.3652, 1./5.2382, 1./6.5478], 2)
 s_pu = openmc.Quadric(surface_id=1, a=rabc[0], b=rabc[1], c=rabc[2], k=-1.0, name='pu')
 
-labc = np.array([40.4568, 48.5482, 60.6852])
+labc = 1./2. * np.array([40.4568, 48.5482, 60.6852])
 s_xmin = openmc.XPlane(surface_id=2, x0=-labc[0]/2, name='xmin')
 s_xmax = openmc.XPlane(surface_id=3, x0=labc[0]/2, name='xmax')
 s_ymin = openmc.YPlane(surface_id=4, y0=-labc[1]/2, name='ymin')

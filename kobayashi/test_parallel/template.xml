@@ -1,5 +1,6 @@
 <input type='transport'
-       print='true'>
+       print='true'
+       number_of_threads='(NUM_THREADS)'>
   <energy_discretization>
     <number_of_groups>1</number_of_groups>
   </energy_discretization>
@@ -16,7 +17,7 @@
         0.1
       </sigma_t>
       <sigma_s>
-        0.0(SCA_INT)
+        0.05
       </sigma_s>
       <chi_nu_sigma_f>
         0.0
@@ -31,7 +32,7 @@
         1.0e-4
       </sigma_t>
       <sigma_s>
-        0.(SCA_INT)e-4
+        0.5e-4
       </sigma_s>
       <chi_nu_sigma_f>
         0.0
@@ -46,7 +47,7 @@
         0.1
       </sigma_t>
       <sigma_s>
-        0.0(SCA_INT)
+        0.05
       </sigma_s>
       <chi_nu_sigma_f>
         0.0
@@ -272,7 +273,7 @@
     </regions>
   </solid_geometry>
   <spatial_discretization input_format='cartesian'>
-    <options weighting='(WEIGHTING)'
+    <options weighting='full'
              external_integral_calculation='true'
              supg='true'
              tau_scaling='none'
@@ -281,9 +282,9 @@
              output_integrals='false'>
       <tau>1.0</tau>
       <integration_ordinates>8</integration_ordinates>
-      <dimensional_cells>(CELLS) (CELLS) (CELLS)</dimensional_cells>
+      <dimensional_cells>10 10 10</dimensional_cells>
     </options>
-    <dimensional_points>(POINTS) (POINTS) (POINTS)</dimensional_points>
+    <dimensional_points>10 10 10</dimensional_points>
     <weight_functions>
       <radius_calculation method='coverage'>
         <number_of_neighbors>12</number_of_neighbors>
@@ -294,10 +295,12 @@
     </weight_functions>
   </spatial_discretization>
   <problem type='steady_state'/>
-  <transport solver='aztec_ifpack'
+  <transport solver='belos_parallel'
              level_of_fill='1.0'
              drop_tolerance='1e-12'
              tolerance='1e-10'
+             kspace='40'
+             max_restarts='40'
              max_iterations='2000'/>
   <solver type='krylov'
           max_iterations='1000'
