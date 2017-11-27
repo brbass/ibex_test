@@ -55,7 +55,8 @@ def get_points(num_radii,
     # Get distance to ignore near boundary
     index = (np.abs(points_r - l2)).argmin()
     delta_l = delta_r[index]
-    l_ignore = (l2 - delta_l / 2)
+    print(delta_l)
+    l_ignore = (l2 - 0.7 * delta_l)
 
     # Remove those points outside boundary
     points_all = points
@@ -105,7 +106,7 @@ def output_points(num_radii,
                                xml_declaration=True)
     
     # Plot if desired
-    if False:
+    if True:
         plt.figure()
         plt.scatter(points[:, 0], points[:, 1], s=2)
         plt.axes().set_aspect('equal')
