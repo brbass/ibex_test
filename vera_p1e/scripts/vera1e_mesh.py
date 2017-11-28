@@ -106,7 +106,7 @@ def output_points(num_radii,
                                xml_declaration=True)
     
     # Plot if desired
-    if True:
+    if False:
         plt.figure()
         plt.scatter(points[:, 0], points[:, 1], s=2)
         plt.axes().set_aspect('equal')
