@@ -12,7 +12,7 @@ def get_parameters():
     procs = []
     for weighting in ["full", "basis"]:
         for sca_int in [0, 5]:
-            point_cases = [10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 36, 40]
+            point_cases = [10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 40]
             for points in point_cases:
                 num_points = np.power(points, 3)
                 mem = num_points * 0.0012
@@ -63,8 +63,10 @@ def run_case(num_procs,
     data["template_filename"] = "template.xml"
     
     # Run case
-    input_filenames = full_run_from_template(data,
-                                             True) # Save input files
+    # input_filenames = full_run_from_template(data,
+    #                                          True) # Save input files
+    input_filenames = full_save_from_template(data,
+                                              False)
     
     # Get output
     for i, input_filename in enumerate(input_filenames):
@@ -75,7 +77,7 @@ def run_case(num_procs,
             
             # Get errors
             phi_trunc = data_out["phi1"]
-            if data["values"][i][4] == 0:
+            if data["values"][i][2] == 0:
                 phi_bench = [5.95659, 1.37185, 5.00871e-1, 2.52429e-1, 1.50260e-1,
                              5.95286e-2, 1.53283e-2, 4.17689e-3, 1.18533e-3, 3.46846e-4,
                              4.70754e-1, 1.69968e-1, 8.68334e-2, 5.25132e-2,
@@ -94,7 +96,7 @@ def run_case(num_procs,
             abs_err = np.sum(np.divide(np.abs(phi_err), phi_bench)) / (1. * len(phi_bench))
             
             # Save data
-            for val in [data["values"][i][0], data["values"][i][1], data["values"][i][2], data["values"][i][3], data["values"][i][4], l2_err, abs_err]:
+            for val in [data["values"][i][0], data["values"][i][1], data["values"][i][2], data["values"][i][3], l2_err, abs_err]:
                 fileout.write("{}\t".format(val))
             for par in ["number_of_moments", "number_of_ordinates", "number_of_points", "weighting"]:
                 fileout.write("{}\t".format(data_out[par]))
