@@ -1,5 +1,6 @@
 <input type='transport'
-       print='true'>
+       print='true'
+       number_of_threads='(NUM_THREADS)'>
   <energy_discretization>
     <number_of_groups>1</number_of_groups>
   </energy_discretization>
@@ -294,16 +295,18 @@
     </weight_functions>
   </spatial_discretization>
   <problem type='steady_state'/>
-  <transport solver='aztec_ifpack'
+  <transport solver='belos_parallel'
              level_of_fill='1.0'
              drop_tolerance='1e-12'
              tolerance='1e-10'
-             max_iterations='2000'/>
+             kspace='40'
+             max_restarts='200'
+             max_iterations='8000'/>
   <solver type='krylov'
-          max_iterations='1000'
+          max_iterations='400'
           kspace='20'
           solver_print='1'
-          tolerance='1e-8'>
+          eigenvalue_tolerance='1e-8'>
     <value type='centers'/>
     <value type='points'>
       <number_of_points>28</number_of_points>

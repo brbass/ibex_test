@@ -12,7 +12,8 @@ def get_parameters():
     procs = []
     for weighting in ["full", "basis"]:
         for sca_int in [0, 5]:
-            point_cases = [10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 40]
+            point_cases = [15, 17, 25, 29, 31, 35]#[16, 18, 24, 30, 35, 36]
+            #point_cases = [10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 40]
             for points in point_cases:
                 num_points = np.power(points, 3)
                 mem = num_points * 0.0012
@@ -40,18 +41,28 @@ def run_case(num_procs,
              parameters,
              fileout,
              run = True):
+    # Get number of threads
+    if num_procs == 1:
+        num_threads = 4
+    elif num_procs == 2:
+        num_threads = 2
+    else:
+        num_threads = 1
+    thread_parameters = [parameter + [num_threads] for parameter in parameters]
+        
     # Set up data list
     data = {}
     if run:
-        data["executable"] = "ibex"
+        data["executable"] = "~/code/ibex_parallel/bin/ibex"
     else:
         data["executable"] = "echo"
     data["num_procs"] = num_procs
     data["parameters"] = ["(POINTS)",
                           "(CELLS)",
                           "(SCA_INT)",
-                          "(WEIGHTING)"]
-    data["values"] = parameters
+                          "(WEIGHTING)",
+                          "(NUM_THREADS)"]
+    data["values"] = thread_parameters
     data["descriptions"] = copy.deepcopy(data["values"])
     for desc in data["descriptions"]:
         if desc[2] == 0:
@@ -63,10 +74,12 @@ def run_case(num_procs,
     data["template_filename"] = "template.xml"
     
     # Run case
-    # input_filenames = full_run_from_template(data,
-    #                                          True) # Save input files
-    input_filenames = full_save_from_template(data,
-                                              False)
+    if run:
+        input_filenames = full_run_from_template(data,
+                                                 True) # Save input files
+    else:
+        input_filenames = full_save_from_template(data,
+                                                  False)
     
     # Get output
     for i, input_filename in enumerate(input_filenames):
@@ -76,7 +89,7 @@ def run_case(num_procs,
             data_out = get_data(output_filename)
             
             # Get errors
-            phi_trunc = data_out["phi1"]
+            phi_trunc = data_out["phi1"][:, 0, 0]
             if data["values"][i][2] == 0:
                 phi_bench = [5.95659, 1.37185, 5.00871e-1, 2.52429e-1, 1.50260e-1,
                              5.95286e-2, 1.53283e-2, 4.17689e-3, 1.18533e-3, 3.46846e-4,
