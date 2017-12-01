@@ -91,9 +91,11 @@ def output_points(num_radii,
     # Get points and output path
     num_points, points = get_points(num_radii, max_delta, initial_delta, ring_start)
     print("mesh has {} points".format(num_points))
-    output_path = "vera1e_mesh_{}_{}_{}.xml".format(num_radii,
-                                                    max_delta,
-                                                    initial_delta)
+    output_path = "vera1e_mesh_{}_{}_{}_{}_{}.xml".format(num_radii,
+                                                          max_delta,
+                                                          initial_delta,
+                                                          ring_start,
+                                                          length)
 
     # Get node and add input data
     node = xml_points(2, # dimension
@@ -109,7 +111,7 @@ def output_points(num_radii,
                                xml_declaration=True)
     
     # Plot if desired
-    if False:
+    if True:
         plt.figure()
         plt.scatter(points[:, 0], points[:, 1], s=2)
         plt.axes().set_aspect('equal')
