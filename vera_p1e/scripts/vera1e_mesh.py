@@ -3,15 +3,17 @@ import numpy as np
 
 def get_points(num_radii,
                max_delta,
-               initial_delta):
+               initial_delta,
+               ring_start = 0.4101,
+               length = 1.26):
     # Set parameters
     initial_delta = np.abs(initial_delta)
-    r0 = 0.4101 - initial_delta / 2
-    r1 = 0.4101 + initial_delta / 2
+    r0 = ring_start - initial_delta / 2
+    r1 = ring_start + initial_delta / 2
     r = 0.0
     dr0 = -initial_delta
     a = np.power((r - r0) / dr0, 1. / (num_radii - 1.))
-    l = 1.26
+    l = length
     l2 = l / 2
     print("delta multiplication factor: a = ", a)
     ind_add = int(np.ceil(l2 / max_delta))
@@ -55,7 +57,6 @@ def get_points(num_radii,
     # Get distance to ignore near boundary
     index = (np.abs(points_r - l2)).argmin()
     delta_l = delta_r[index]
-    print(delta_l)
     l_ignore = (l2 - 0.7 * delta_l)
 
     # Remove those points outside boundary
@@ -84,9 +85,11 @@ def get_points(num_radii,
 
 def output_points(num_radii,
                   max_delta,
-                  initial_delta):
+                  initial_delta,
+                  ring_start = 0.4101,
+                  length = 1.26):
     # Get points and output path
-    num_points, points = get_points(num_radii, max_delta, initial_delta)
+    num_points, points = get_points(num_radii, max_delta, initial_delta, ring_start)
     print("mesh has {} points".format(num_points))
     output_path = "vera1e_mesh_{}_{}_{}.xml".format(num_radii,
                                                     max_delta,
@@ -113,11 +116,16 @@ def output_points(num_radii,
         plt.show()
     
 if __name__ == '__main__':
-    if (len(sys.argv) != 4):
-        print("vera1e_mesh.py [num_radii max_delta initial_delta]")
+    if (len(sys.argv) < 4):
+        print("vera1e_mesh.py [num_radii max_delta initial_delta (ring_start=0.4101) (length=1.26)]")
         sys.exit()
-    num_radii = int(sys.argv[1])
-    max_delta = float(sys.argv[2])
-    initial_delta = float(sys.argv[3])
-    output_points(num_radii, max_delta, initial_delta)
+    args = []
+    args.append(int(sys.argv[1]))
+    for i in range(2, len(sys.argv)):
+        args.append(float(sys.argv[i]))
+    output_points(*args)
+    # num_radii = int(sys.argv[1])
+    # max_delta = float(sys.argv[2])
+    # initial_delta = float(sys.argv[3])
+    # output_points(num_radii, max_delta, initial_delta)
 
