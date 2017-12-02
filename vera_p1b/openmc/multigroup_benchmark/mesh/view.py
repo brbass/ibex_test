@@ -21,7 +21,7 @@ flux = tally.get_slice(scores=['flux-Y0,0'])
 print(flux)
 
 # Save average flux values
-flux_vals = np.resize(flux.mean, (10000, 2))
+flux_vals = np.resize(flux.mean, (10000, 2))[:,::-1]
 av_val = np.mean(flux_vals)
 flux_vals = flux_vals / av_val
 
