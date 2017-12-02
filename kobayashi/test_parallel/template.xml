@@ -282,9 +282,9 @@
              output_integrals='false'>
       <tau>1.0</tau>
       <integration_ordinates>8</integration_ordinates>
-      <dimensional_cells>10 10 10</dimensional_cells>
+      <dimensional_cells>40 40 40</dimensional_cells>
     </options>
-    <dimensional_points>10 10 10</dimensional_points>
+    <dimensional_points>40 40 40</dimensional_points>
     <weight_functions>
       <radius_calculation method='coverage'>
         <number_of_neighbors>12</number_of_neighbors>

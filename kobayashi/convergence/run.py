@@ -12,7 +12,8 @@ def get_parameters():
     procs = []
     for weighting in ["full", "basis"]:
         for sca_int in [0, 5]:
-            point_cases = [15, 17, 25, 29, 31, 35]#[16, 18, 24, 30, 35, 36]
+            point_cases = [11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 39, 41]
+            #point_cases = [15, 17, 25, 29, 31, 35]#[16, 18, 24, 30, 35, 36]
             #point_cases = [10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 40]
             for points in point_cases:
                 num_points = np.power(points, 3)

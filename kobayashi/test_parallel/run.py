@@ -11,7 +11,7 @@ def run_case(num_procs,
              fileout,
              run = True):
     # Set up data list
-    for executable, description in zip(["~/code/ibex_parallel/bin/ibex"], ["nnew"]):
+    for executable, description in zip(["~/code/ibex_parallel/bin/ibex"], ["big"]):
         data = {}
         if run:
             data["executable"] = executable
