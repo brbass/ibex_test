@@ -1,6 +1,6 @@
 <input type='transport'
        print='true'
-       number_of_threads='4'>
+       number_of_threads='1'>
   <energy_discretization>
     <number_of_groups>2</number_of_groups>
   </energy_discretization>
@@ -150,7 +150,7 @@
              output_integrals='false'
              adaptive_quadrature='false'>
       <tau>1.0</tau>
-      <integration_ordinates>128</integration_ordinates>
+      <integration_ordinates>16</integration_ordinates>
       <dimensional_cells>1000</dimensional_cells>
     </options>
     <dimensional_points>1000</dimensional_points>
