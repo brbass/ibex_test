@@ -9,16 +9,10 @@ def get_parameters():
     point_files = []
     descriptions = []
     points = []
-    for param in [[13, 0.08, 0.02],
-                  [14, 0.06, 0.015],
-                  [16, 0.04, 0.01],
-                  [17, 0.03, 0.0075],
-                  [19, 0.02, 0.005],
-                  [20, 0.015, 0.00375],
-                  [21, 0.01, 0.0025]]:
-        point_files.append("vera1e_mesh_{}_{}_{}_0.4423_1.26.xml".format(*param))
-        descriptions.append("mult{}".format(param[2]))
-    for param in [16, 24, 32, 48, 64, 96, 128]:
+    for param in [0.3, 0.2, 0.17, 0.12, 0.08, 0.06, 0.04, 0.03, 0.02, 0.014]:
+        point_files.append("vera1e_mesh_2_{0}_{0}_0.4423_1.26.xml".format(param))
+        descriptions.append("mult{}".format(param))
+    for param in [3, 4, 6, 8, 12, 16, 16, 24, 32, 48, 64, 96]:
         point_files.append("square_1.26_{}.xml".format(param))
         descriptions.append("square{}".format(param))
     for point_file in point_files:
@@ -79,7 +73,7 @@ def get_values(num_procs,
     for tau in [1.0]:
         for weighting in ["full", "basis"]:
             for num_point, point_file, point_description in zip(num_points, point_files, point_descriptions):
-                min_integration_cells = 128
+                min_integration_cells = 512
                 integration_cells = int(4 * np.sqrt(num_point))
                 if integration_cells < min_integration_cells:
                     integration_cells = min_integration_cells
