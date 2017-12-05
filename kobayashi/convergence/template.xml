@@ -281,7 +281,7 @@
              output_material='false'
              output_integrals='false'>
       <tau>1.0</tau>
-      <integration_ordinates>8</integration_ordinates>
+      <integration_ordinates>12</integration_ordinates>
       <dimensional_cells>(CELLS) (CELLS) (CELLS)</dimensional_cells>
     </options>
     <dimensional_points>(POINTS) (POINTS) (POINTS)</dimensional_points>

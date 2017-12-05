@@ -10,24 +10,26 @@ def get_parameters():
     # Get sets of points and cells
     parameters = []
     procs = []
-    for weighting in ["full", "basis"]:
-        for sca_int in [0, 5]:
-            point_cases = [11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 39, 41]
-            #point_cases = [15, 17, 25, 29, 31, 35]#[16, 18, 24, 30, 35, 36]
-            #point_cases = [10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 40]
-            for points in point_cases:
-                num_points = np.power(points, 3)
-                mem = num_points * 0.0012
-                proc = int(np.floor(100./mem))
-                if proc < 1:
-                    print("case with {} points can't run with 0 procs".format(points))
-                else:
-                    if proc > 4:
-                        proc = 4
-                    cells = int(math.ceil((points - 1)/10.0))*10
+    #point_cases = [11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 39, 41]
+    #point_cases = [10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 35, 40, 42]
+    point_cases = [35, 40, 42]
+    #point_cases = [15, 17, 25, 29, 31, 35]#[16, 18, 24, 30, 35, 36]
+    #point_cases = [10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 40]
+    for points in point_cases:
+        num_points = np.power(points, 3)
+        mem = num_points * 0.0012
+        proc = int(np.floor(100./mem))
+        if proc < 1:
+            print("case with {} points can't run with 0 procs".format(points))
+        else:
+            if proc > 4:
+                proc = 4
+            cells = int(math.ceil((points - 1)/10.0))*10
+            for weighting in ["full", "basis"]:
+                for sca_int in [0, 5]:
                     parameters.append([points, cells, sca_int, weighting])
                     procs.append(proc)
-    proc_cases = np.unique(procs)
+    proc_cases = np.unique(procs)[::-1]
     data = []
     for i, proc in enumerate(proc_cases):
         local_data = []
@@ -54,7 +56,7 @@ def run_case(num_procs,
     # Set up data list
     data = {}
     if run:
-        data["executable"] = "~/code/ibex_parallel/bin/ibex"
+        data["executable"] = "ibex"
     else:
         data["executable"] = "echo"
     data["num_procs"] = num_procs
@@ -80,7 +82,7 @@ def run_case(num_procs,
                                                  True) # Save input files
     else:
         input_filenames = full_save_from_template(data,
-                                                  False)
+                                                  True)
     
     # Get output
     for i, input_filename in enumerate(input_filenames):
@@ -135,3 +137,4 @@ def run_all(run = True):
             
 if __name__ == '__main__':
     run_all(True)
+ 

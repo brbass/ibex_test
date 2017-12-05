@@ -70,7 +70,7 @@ def get_values(num_procs,
     
     # Set up data list
     data = {}
-    data["executable"] = "~/code/ibex_parallel/bin/ibex"
+    data["executable"] = "ibex"
     data["num_procs"] = num_procs
     data["parameters"] = ["(POINTS_FILE)",
                           "(TAU)",

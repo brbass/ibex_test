@@ -8,15 +8,15 @@ def run_all(run = True):
     # Set up data list
     data = {}
     if run:
-        data["executable"] = "ibex"
+        data["executable"] = "~/code/ibex_parallel/bin/ibex"
     else:
         data["executable"] = "echo"
     data["num_procs"] = 4
     data["parameters"] = ["(POINTS_FILE)", "(CELLS)"]
-    mesh_params = [[18, 0.00625, 0.00125, 256],
-                   [16, 0.0125, 0.0025, 128],
-                   [14, 0.025, 0.005, 64],
-                   [12, 0.05, 0.01, 32]]
+    mesh_params = [[19, 0.04, 0.004, 512],
+                   [22, 0.02, 0.002, 512],
+                   [25, 0.01, 0.001, 1024],
+                   [28, 0.005, 0.0005, 1024]]
     data["values"] = [["vera1e_mesh_{}_{}_{}.xml".format(i, j, k),
                        str(l)] for (i, j, k, l) in mesh_params]
     data["descriptions"] = [["{}_{}_{}".format(i, j, k),
