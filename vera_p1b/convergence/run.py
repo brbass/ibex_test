@@ -9,10 +9,19 @@ def get_parameters():
     point_files = []
     descriptions = []
     points = []
-    for param in [0.3, 0.2, 0.17, 0.12, 0.08, 0.06, 0.04, 0.03, 0.02, 0.014]:
-        point_files.append("vera1e_mesh_2_{0}_{0}_0.4423_1.26.xml".format(param))
-        descriptions.append("mult{}".format(param))
-    for param in [3, 4, 6, 8, 12, 16, 16, 24, 32, 48, 64, 96]:
+    for param in [[8, 0.4, 0.2],
+                  [8, 0.3, 0.15],
+                  [8, 0.2, 0.1],
+                  [13, 0.1, 0.05],
+                  [13, 0.15, 0.075],
+                  [15, 0.05, 0.025],
+                  [18, 0.0375, 0.01875],
+                  [21, 0.025, 0.0125],
+                  [24, 0.01875, 0.009375],
+                  [27, 0.0125, 0.00625]]:
+        point_files.append("vera1e_mesh_{}_{}_{}_0.4101_1.26.xml".format(*param))
+        descriptions.append("mult{}_{}_{}".format(*param))
+    for param in [3, 4, 6, 8, 12, 16, 16, 24, 32, 48, 64, 96, 128]:
         point_files.append("square_1.26_{}.xml".format(param))
         descriptions.append("square{}".format(param))
     for point_file in point_files:
