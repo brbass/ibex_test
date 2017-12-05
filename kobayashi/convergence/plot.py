@@ -46,7 +46,7 @@ def plot_convergence():
     # Plot data
     fig, ax = plt.subplots()
     plt.xlabel("number of points")
-    plt.ylabel(r"$L_2$ error")
+    plt.ylabel(r"relative $L_2$ error")
     plt.xlim([1e3, 1e5])
     plt.ylim([1e-3, 1])
     colors = ['#66c2a5','#e78ac3','#fc8d62','#8da0cb']
@@ -63,7 +63,7 @@ def plot_convergence():
     leg1 = plt.legend(lns[0], [key0[0].decode(), key0[1].decode()], title="absorbing", loc=[0.62, 0.79])
     leg2 = plt.legend(lns[1], [key0[0].decode(), key0[1].decode()], title="scattering", loc=[0.81, 0.79])
     plt.gca().add_artist(leg1)
-    plt.savefig("convergence_kobayashi.pdf", bbox_inches='tight')
+    plt.savefig("kobayashi_convergence.pdf", bbox_inches='tight')
     plt.show()
     plt.close()
 

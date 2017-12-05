@@ -37,24 +37,25 @@ def plot_convergence():
     markers = ['D', '^', 's', 'v']
     styles = ['-', '--']
     labels = [key.decode() for key in keys]
-    fig, ax1 = plt.subplots()#plt.subplots(figsize=(6.0, 5.0))
+    fig, ax1 = plt.subplots()
     ax2 = ax1.twinx()
     lns = []
     for i, key in enumerate(keys):
-        ln1 = ax1.semilogy(points[i], k_errors[i], marker=markers[i], color=colors[i], linestyle=styles[0], label="{}".format(labels[i]))
-        ln2 = ax2.semilogy(points[i], l2_errors[i], marker=markers[2 + i], color=colors[2 + i], linestyle=styles[1], label="{}".format(labels[i]))
+        ln1 = ax1.loglog(points[i], k_errors[i], marker=markers[i], color=colors[i], linestyle=styles[0], label="{}".format(labels[i]))
+        ln2 = ax2.loglog(points[i], l2_errors[i], marker=markers[2 + i], color=colors[2 + i], linestyle=styles[1], label="{}".format(labels[i]))
         lns.append(ln1)
         lns.append(ln2)
     ax1.set_xlabel("number of points")
     ax1.set_ylabel(r"$k$-eigenvalue error (pcm)")
+    ax1.set_xlim([1e3, 1e5])
     ax1.set_ylim([1e2, 1e4])
     ax1.grid(True, which='major', linestyle='-', color='grey')
     ax1.grid(True, which='minor', linestyle='-', color='lightgrey')
     ax1.legend(title=r"$k$-eigenvalue", loc=[0.59, 0.79])
-    ax2.set_ylabel(r"$L_2$ error")
+    ax2.set_ylabel(r"relative $L_2$ error")
     ax2.set_ylim([1e-3, 1e-1])
     ax2.legend(title=r"$L_2$", loc=[0.81, 0.79])
-    plt.savefig("convergence_icsbep.pdf", bbox_inches='tight')
+    plt.savefig("icsbep_convergence.pdf", bbox_inches='tight')
     plt.show()
     plt.close()
 
