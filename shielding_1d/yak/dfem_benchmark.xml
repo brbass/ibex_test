@@ -46,7 +46,7 @@
   <angular_discretization>
     <dimension>1</dimension>
     <number_of_moments>2</number_of_moments>
-    <number_of_ordinates>512</number_of_ordinates>
+    <number_of_ordinates>256</number_of_ordinates>
   </angular_discretization>
   
   <energy_discretization>

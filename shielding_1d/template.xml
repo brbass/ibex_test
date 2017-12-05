@@ -7,7 +7,7 @@
   <angular_discretization>
     <dimension>1</dimension>
     <number_of_moments>2</number_of_moments>
-    <number_of_ordinates>512</number_of_ordinates>
+    <number_of_ordinates>256</number_of_ordinates>
   </angular_discretization>
   <materials>
    <number_of_materials>3</number_of_materials>
@@ -141,7 +141,7 @@
     </regions>
   </solid_geometry>
   <spatial_discretization input_format='cartesian'>
-    <options weighting='full'
+    <options weighting='(WEIGHTING)'
              external_integral_calculation='true'
              supg='true'
              tau_scaling='none'
@@ -149,11 +149,11 @@
              output_material='false'
              output_integrals='false'
              adaptive_quadrature='false'>
-      <tau>1.0</tau>
-      <integration_ordinates>16</integration_ordinates>
-      <dimensional_cells>1000</dimensional_cells>
+      <tau>(TAU)</tau>
+      <integration_ordinates>64</integration_ordinates>
+      <dimensional_cells>10000</dimensional_cells>
     </options>
-    <dimensional_points>1000</dimensional_points>
+    <dimensional_points>(POINTS)</dimensional_points>
     <weight_functions>
       <radius_calculation method='coverage'>
         <number_of_neighbors>8</number_of_neighbors>
@@ -164,7 +164,7 @@
     </weight_functions>
   </spatial_discretization>
   <problem type='steady_state'/>
-  <transport solver='belos_parallel'
+  <transport solver='aztec_ifpack'
              level_of_fill='1.0'
              drop_tolerance='1e-12'
              tolerance='1e-12'
@@ -179,7 +179,7 @@
     <value type='centers'/>
     <value type='integral'
            adaptive_quadrature='false'
-           integration_ordinates='8'>
+           integration_ordinates='16'>
       <limits>0. 4.</limits>
       <dimensional_cells>10000</dimensional_cells>
     </value>
