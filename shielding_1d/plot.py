@@ -53,6 +53,57 @@ def plot_convergence():
     plt.savefig("shielding1d_convergence.pdf", bbox_inches='tight')
     plt.show()
     plt.close()
+    return
+
+def plot_geometry():
+    colors = ['#fc8d62','#8da0cb','#66c2a5','#e78ac3']
+    labels = ["source", "moderator", "absorber"]
+    surfaces = [0., 0.5, 3.0, 4.0]
+    height = 1.5
+    
+    fig, ax = plt.subplots()
+    for i, (xmin, xmax) in enumerate(zip(surfaces[:-1], surfaces[1:])):
+        box = plt.Rectangle((xmin, 0), xmax - xmin, height, zorder=1, color=colors[i], label=labels[i])
+        ax.add_patch(box)
+    ax.set_xlim([0, 4])
+    ax.set_ylim([0, height])
+    plt.axis('scaled')
+    plt.xticks([0, 0.5, 1.0, 3.0, 4.0])
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.spines['left'].set_visible(False)
+    ax.get_xaxis().tick_bottom()
+    plt.gca().yaxis.set_major_locator(plt.NullLocator())
+    plt.xlabel(r"$x$")
+    plt.legend(loc='upper right', framealpha=0.9)
+    plt.savefig("shielding1d_geometry.pdf", bbox_inches='tight')
+    return
+    
+def plot_solution(output_file):
+    data = get_data(output_file)
+    num_groups = data["number_of_groups"]
+    num_points = data["number_of_points"]
+    phi = data["phi"]
+    points = data["points"]
+    
+    labels = ["fast", "thermal"]
+    colors = ['#66c2a5','#fc8d62','#e78ac3','#8da0cb']
+    styles = ['-', '--']
+    
+    plt.figure()
+    for g in range(num_groups):
+        plt.plot(points[:, 0], phi[:, 0, g],
+                 label=labels[g], color=colors[g], linestyle=styles[g])
+    plt.grid(True, which='major', linestyle='-', color='lightgrey')
+    plt.grid(True, which='minor', linestyle='-', color='lightgrey')
+    plt.xlabel("x")
+    plt.ylabel("scalar flux")
+    plt.legend()
+    plt.savefig("shielding1d_solution.pdf", bbox_inches='tight')
+    
+    return
 
 if __name__ == '__main__':
-    plot_convergence()
+    # plot_convergence()
+    # plot_geometry()
+    plot_solution("test_2560_full_1.0.xml.out")
