@@ -9,20 +9,18 @@ def get_parameters():
     point_files = []
     descriptions = []
     points = []
-    for param in [[19, 0.04, 0.004],
-                  [20, 0.03, 0.003],
-                  [22, 0.02, 0.002]]:
-        point_files.append("vera1e_mesh_{}_{}_{}.xml".format(*param))
-        descriptions.append("mult{}".format(param[2]))
-    # for param in [16, 24, 32, 48, 64, 96, 128, 192, 256]:
-    #     point_files.append("square_1.26_{}.xml".format(param))
-    #     descriptions.append("square{}".format(param))
+    for param in [[13, 0.1, 0.02],
+                  [14, 0.075, 0.015],
+                  [16, 0.05, 0.01],
+                  [17, 0.0375, 0.0075],
+                  [19, 0.025, 0.005],
+                  [21, 0.0125, 0.0025],
+                  [22, 0.009375, 0.001875],
+                  [24, 0.008, 0.0016]]:
+        point_files.append("vera1e_mesh_{}_{}_{}_0.4101_1.26.xml".format(*param))
+        descriptions.append("mult{}-{}-{}".format(param[0], param[1], param[2]))
     for point_file in point_files:
         num_points = int(et.parse(point_file).getroot().find("spatial_discretization").findtext("number_of_points"))
-        mem = 0.00045 * 16 * num_points
-        if mem > 100:
-            print("more memory required for case {}".format(descriptions[-1]))
-            return
         points.append(num_points)
     
     return points, point_files, descriptions
@@ -50,16 +48,20 @@ def get_values(num_procs,
                     integration_cells = int(4 * np.sqrt(num_point))
                     if integration_cells < min_integration_cells:
                         integration_cells = min_integration_cells
-                    data["values"].append([point_file,
-                                           rule,
-                                           tau,
-                                           weighting,
-                                           integration_cells])
-                    data["descriptions"].append([point_description,
-                                                 rule,
-                                                 tau,
-                                                 weighting,
-                                                 integration_cells])
+                    mem = 0.0005 * num_point * (4 ** (rule - 3))
+                    if mem < 100:
+                        data["values"].append([point_file,
+                                               rule,
+                                               tau,
+                                               weighting,
+                                               integration_cells])
+                        data["descriptions"].append([point_description,
+                                                     rule,
+                                                     tau,
+                                                     weighting,
+                                                     integration_cells])
+                    else:
+                        print("case {} cannot run with rule {}".format(point_description, rule))
     data["prefix"] = "test"
     data["postfix"] = ".xml"
     data["template_filename"] = "template.xml"
