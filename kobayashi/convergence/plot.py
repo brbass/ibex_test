@@ -6,34 +6,28 @@ from ibex_io import get_data
 def plot_convergence():
     # Get convergence data
     # Columns:
-    # 0. Dim points
-    # 1. Dim int cells
-    # 2. Scattering int
-    # 3. Weighting
-    # 4. L2 error
-    # 5. Abs error
-    # 6. Num moments
-    # 7. Num ordinates
-    # 8. Num points
-    # 9. Weighting
-    # 10-12. Timing
-    # 13-42. Phi err
-    sca_ind, wei_ind, num_ind = 2, 3, 8
-    l2_ind = 4
+    # 0. Num points
+    # 1. Weighting
+    # 2. Number of moments
+    # 3. Number of ordinates
+    # 4. Scattering option
+    # 5. L2 error
+    # 6. Abs error
+    sca_ind, wei_ind, num_ind = 4, 1, 0
+    l2_ind = 5
     data = np.genfromtxt('output.txt',
-                         dtype=None,
-                         usecols=range(10))
+                         dtype=None)
     
     # Sort data by number of points
     data = sorted(data, key=lambda data: (data[num_ind]))
     
     # Get individual arrays
     key0 = [b'basis', b'full']
-    key1 = [0, 5]
+    key1 = [b'abs', b'sca']
     keys = [[i, j] for i, j in itertools.product(key0, key1)]
     indices = []
     for i, key in enumerate(keys):
-        ind = [j for j in range(len(data)) if key[0] in data[j][wei_ind] and key[1] == data[j][sca_ind]]
+        ind = [j for j in range(len(data)) if key[0] in data[j][wei_ind] and key[1] in data[j][sca_ind]]
         indices.append(ind)
     errors = []
     points = []
@@ -54,7 +48,7 @@ def plot_convergence():
     styles = ["-","--","-","--"]
     lns = [[],[]]
     for i, key in enumerate(keys):
-        labels = [key[0].decode(), "abs" if key[1] == 0 else "sca"]
+        labels = [key[0].decode(), key[1].decode()]
         ln_ind = 0 if key[1] == 0 else 1
         ln = ax.loglog(points[i], errors[i], color=colors[i], marker=markers[i], linestyle=styles[i])
         lns[ln_ind].append(ln[0])
