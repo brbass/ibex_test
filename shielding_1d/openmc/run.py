@@ -18,6 +18,11 @@ xs_source.set_scatter_matrix([[[0.9, 0.1], [0.05, 0.0]],
 xs_source.set_absorption([0.05, 1.15])
 xs_source.set_nu_fission([0.0, 1.0])
 xs_source.set_chi([1.0, 0.0])
+# xs_source.set_scatter_matrix([[[0.0, 0.0], [0.0, 0.0]],
+#                               [[0.0, 0.0], [0.0, 0.0]]])
+# xs_source.set_absorption([1.0, 2.0])
+# xs_source.set_nu_fission([0.0, 0.0])
+# xs_source.set_chi([1.0, 0.0])
 
 xs_thin = openmc.XSdata('thin', groups)
 xs_thin.order = 1
@@ -27,6 +32,11 @@ xs_thin.set_scatter_matrix([[[0.05, 0.0], [0.45, 0.1]],
 xs_thin.set_absorption([0.0, 0.0])
 xs_thin.set_nu_fission([0.0, 0.0])
 xs_thin.set_chi([0.0, 0.0])
+# xs_thin.set_scatter_matrix([[[0.0, 0.0], [0.0, 0.0]],
+#                               [[0.0, 0.0], [0.0, 0.0]]])
+# xs_thin.set_absorption([0.5, 1.0])
+# xs_thin.set_nu_fission([0.0, 0.0])
+# xs_thin.set_chi([1.0, 0.0])
 
 xs_thick = openmc.XSdata('thick', groups)
 xs_thick.order = 1
@@ -81,7 +91,6 @@ s_zmin = openmc.ZPlane(surface_id=7, z0=-inf_dist, name='zmin')
 s_zmax = openmc.ZPlane(surface_id=8, z0=inf_dist, name='zmax')
 
 s_x1.boundary_type = 'reflective'
-s_x2.boundary_type = 'reflective'
 s_x4.boundary_type = 'vacuum'
 s_ymin.boundary_type = 'reflective'
 s_ymax.boundary_type = 'reflective'
@@ -130,23 +139,22 @@ tallies_file.export_to_xml()
 # Settings #
 ############
 
-dist_source = 1.0
+dist_source = 2.0
 uniform_dist = openmc.stats.Box([x_pos[0], -dist_source, -dist_source],
                                 [x_pos[1], dist_source, dist_source])
 isotropic_dist = openmc.stats.Isotropic()
-energy_dist = openmc.stats.Discrete([1e0], [1.0])
+energy_dist = openmc.stats.Discrete([0.], [1.0])
 source = openmc.Source(uniform_dist,
                        isotropic_dist,
                        energy_dist,
-                       strength=1000)
-
+                       strength=2)
 settings_file = openmc.Settings()
 settings_file.energy_mode = "multi-group"
 settings_file.run_mode = "fixed source"
 settings_file.batches = 100
-settings_file.particles = int(1e1)
+settings_file.particles = int(1e2)
 settings_file.survival_biasing = True
-settings_file.verbosity = 8
+settings_file.verbosity = 6
 settings_file.source = source
 settings_file.export_to_xml()
 
