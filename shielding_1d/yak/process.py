@@ -34,7 +34,8 @@ def plot_phi_dfem(output_filename):
     plt.legend()
     plt.show()
 
-def output_phi_integral(output_filename):
+def output_phi_integral(output_filename,
+                        num_sum = 1):
     node = et.parse(output_filename).getroot()
     num_cells = int(node.findtext("finite_element_mesh/number_of_elements"))
     num_nodes = int(node.findtext("finite_element_mesh/number_of_nodes"))
@@ -55,8 +56,21 @@ def output_phi_integral(output_filename):
     for i in range(num_cells):
         for g in range(num_groups):
             phi_average[i, g] = np.mean(phi[i, :, 0, g])
-    np.savetxt("phi_average.txt", phi_average, delimiter="\t")
+    if num_sum > 1:
+        num_values = int(num_cells / num_sum)
+        phi_out = np.zeros((num_values, num_groups))
+        for i in range(num_values):
+            val = [0., 0.]
+            for j in range(num_sum):
+                phi_out[i] += phi_average[j + num_sum * i]
+        phi_out /= num_sum
+    else:
+        phi_out = phi_average
+    np.savetxt("phi_average_{}_{}.txt".format(num_values, num_sum), phi_out, delimiter="\t")
     
 if __name__ == '__main__':
     #plot_phi_dfem("dfem_benchmark.xml.out")
-    output_phi_integral("dfem_benchmark.xml.out")
+    # output_phi_integral("dfem_benchmark.xml.out",
+    #                     10)
+    output_phi_integral("dfem_benchmark_large.xml.out",
+                        500)

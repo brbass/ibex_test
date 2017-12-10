@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#PBS -N icsbep_pu_benchmark
+#PBS -N shielding_1d_benchmark
 
 #PBS -M brbass@umich.edu
 #PBS -m abe

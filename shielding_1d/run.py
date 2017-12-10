@@ -22,7 +22,7 @@ def run_all(num_procs,
                    160, 240, 320, 480, 640, 960, 1280, 1920,
                    2560, 3840, 5120, 7680, 10240]:
         for weighting in ["full", "basis"]:
-            for tau in [0.0, 0.5, 1.0]:
+            for tau in [1.0]:
                 data["values"].append([points,
                                        weighting,
                                        tau])

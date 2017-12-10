@@ -147,12 +147,12 @@ energy_dist = openmc.stats.Discrete([0.], [1.0])
 source = openmc.Source(uniform_dist,
                        isotropic_dist,
                        energy_dist,
-                       strength=2)
+                       strength=1)
 settings_file = openmc.Settings()
 settings_file.energy_mode = "multi-group"
 settings_file.run_mode = "fixed source"
 settings_file.batches = 100
-settings_file.particles = int(1e2)
+settings_file.particles = int(1e6)
 settings_file.survival_biasing = True
 settings_file.verbosity = 6
 settings_file.source = source

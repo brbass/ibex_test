@@ -150,7 +150,7 @@
              output_integrals='false'
              adaptive_quadrature='false'>
       <tau>(TAU)</tau>
-      <integration_ordinates>64</integration_ordinates>
+      <integration_ordinates>32</integration_ordinates>
       <dimensional_cells>10000</dimensional_cells>
     </options>
     <dimensional_points>(POINTS)</dimensional_points>
@@ -179,9 +179,9 @@
     <value type='centers'/>
     <value type='integral'
            adaptive_quadrature='false'
-           integration_ordinates='16'>
+           integration_ordinates='64'>
       <limits>0. 4.</limits>
-      <dimensional_cells>10000</dimensional_cells>
+      <dimensional_cells>1000</dimensional_cells>
     </value>
   </solver>
 </input>

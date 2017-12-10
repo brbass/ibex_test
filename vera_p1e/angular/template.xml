@@ -237,7 +237,7 @@
     <weight_functions>
       <radius_calculation method='coverage'>
         <number_of_neighbors>8</number_of_neighbors>
-        <radius_multiplier>1.0</radius_multiplier>
+        <radius_multiplier>1.1</radius_multiplier>
       </radius_calculation>
       <meshless_function type='linear_mls'
                          function='wendland11'/>
