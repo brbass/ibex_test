@@ -1,13 +1,13 @@
 import numpy as np
-import sys
-import glob
+import sys, os, glob
 from ibex_io import get_data
 
 def get_errors(fileout,
                contained_string):
     # Get benchmark results
-    k_bench = np.loadtxt("../openmc/multigroup_benchmark/k_eigenvalue.txt")[0]
-    phi_bench = np.loadtxt("../openmc/multigroup_benchmark/mesh/mesh_tally.txt")
+    bench_dir = os.path.join(os.path.dirname(__file__), "..", "openmc", "multigroup_benchmark")
+    k_bench = np.loadtxt(os.path.join(bench_dir, "k_eigenvalue.txt"))[0]
+    phi_bench = np.loadtxt(os.path.join(bench_dir, "mesh", "mesh_tally.txt"))
 
     # Get errors for each set of output data
     output_filenames = sorted(glob.glob("*{}*.xml.out".format(contained_string)))

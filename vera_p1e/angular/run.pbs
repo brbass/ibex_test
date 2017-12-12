@@ -21,5 +21,3 @@ export OMP_NUM_THREADS=4
 
 #  Put your job commands here:
 python run.py
-
-

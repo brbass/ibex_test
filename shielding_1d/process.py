@@ -6,8 +6,8 @@ from ibex_io import get_data
 def get_errors(fileout,
                contained_string):
     # Get benchmark results
-    # phi_bench = np.loadtxt("openmc/mesh_tally.txt")
-    phi_bench = np.loadtxt("yak/phi_average_1000_500.txt")
+    phi_bench = np.loadtxt("openmc/mesh_tally.txt")
+    # phi_bench = np.loadtxt("yak/phi_average_1000_500.txt")
     
     # Get errors for each set of output data
     output_filenames = sorted(glob.glob("*{}*.xml.out".format(contained_string)))

@@ -9,15 +9,22 @@ def get_parameters():
     point_files = []
     descriptions = []
     points = []
-    for param in [[13, 0.1, 0.02],
-                  [14, 0.075, 0.015],
-                  [16, 0.05, 0.01],
-                  [17, 0.0375, 0.0075],
-                  [20, 0.01875, 0.00375],
-                  [19, 0.025, 0.005],
-                  [21, 0.0125, 0.0025],
-                  [22, 0.009375, 0.001875],
-                  [24, 0.008, 0.0016]]:
+    params5 = [[13, 0.1, 0.02],
+               [14, 0.075, 0.015],
+               [16, 0.05, 0.01],
+               [17, 0.0375, 0.0075],
+               [20, 0.01875, 0.00375],
+               [19, 0.025, 0.005],
+               [21, 0.0125, 0.0025],
+               [22, 0.009375, 0.001875],
+               [24, 0.008, 0.0016]]
+    params10 = [[18, 0.06, 0.006],
+                [19, 0.04, 0.004],
+                [20, 0.03, 0.003],
+                [22, 0.02, 0.002],
+                [24, 0.015, 0.0015],
+                [25, 0.01, 0.001]]
+    for param in params10:
         point_files.append("vera1e_mesh_{}_{}_{}_0.4101_1.26.xml".format(*param))
         descriptions.append("mult{}-{}-{}".format(param[0], param[1], param[2]))
     for point_file in point_files:
@@ -43,13 +50,13 @@ def get_values(num_procs,
     data["descriptions"] = []
     for tau in [1.0]:
         for weighting in ["full"]:
-            for rule in [1, 2, 3, 4, 5]:
+            for rule in [5, 4, 3]:
                 for num_point, point_file, point_description in zip(num_points, point_files, point_descriptions):
                     min_integration_cells = 128
                     integration_cells = int(4 * np.sqrt(num_point))
                     if integration_cells < min_integration_cells:
                         integration_cells = min_integration_cells
-                    mem = 0.0005 * num_point * (4 ** (rule - 3))
+                    mem = 0.00071 * num_point * (4 ** (rule - 3)) 
                     if mem < 100:
                         data["values"].append([point_file,
                                                rule,

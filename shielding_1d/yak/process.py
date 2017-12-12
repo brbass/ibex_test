@@ -67,10 +67,12 @@ def output_phi_integral(output_filename,
     else:
         phi_out = phi_average
     np.savetxt("phi_average_{}_{}.txt".format(num_values, num_sum), phi_out, delimiter="\t")
-    
+
 if __name__ == '__main__':
     #plot_phi_dfem("dfem_benchmark.xml.out")
     # output_phi_integral("dfem_benchmark.xml.out",
     #                     10)
-    output_phi_integral("dfem_benchmark_large.xml.out",
-                        500)
+    # output_phi_integral("dfem_benchmark_large.xml.out",
+    #                     500)
+    output_phi_integral("dfem_benchmark_small.xml.out",
+                        5)

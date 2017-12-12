@@ -120,7 +120,7 @@ geometry.export_to_xml()
 ###########
 
 mesh = openmc.Mesh()
-mesh.dimension = [10000, 1, 1]
+mesh.dimension = [1000, 1, 1]
 mesh.lower_left = [x_pos[0], -inf_dist, -inf_dist]
 mesh.upper_right = [x_pos[-1], inf_dist, inf_dist]
 
@@ -152,7 +152,7 @@ settings_file = openmc.Settings()
 settings_file.energy_mode = "multi-group"
 settings_file.run_mode = "fixed source"
 settings_file.batches = 100
-settings_file.particles = int(1e6)
+settings_file.particles = int(1e7)
 settings_file.survival_biasing = True
 settings_file.verbosity = 6
 settings_file.source = source

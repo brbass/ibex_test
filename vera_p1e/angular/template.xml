@@ -237,7 +237,7 @@
     <weight_functions>
       <radius_calculation method='coverage'>
         <number_of_neighbors>8</number_of_neighbors>
-        <radius_multiplier>1.1</radius_multiplier>
+        <radius_multiplier>1.02</radius_multiplier>
       </radius_calculation>
       <meshless_function type='linear_mls'
                          function='wendland11'/>
@@ -245,7 +245,7 @@
   </spatial_discretization>
   <problem type='eigenvalue'/>
   <transport solver='belos_parallel'
-             level_of_fill='1.0'
+             level_of_fill='2.0'
              drop_tolerance='1e-12'
              tolerance='1e-10'
              kspace='20'
