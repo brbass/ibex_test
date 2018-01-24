@@ -5,7 +5,9 @@ import xml.etree.ElementTree as et
 from ibex_io import get_scalar, get_vector, unpack3
 
 def get_error(output_filename):
-    output_node = et.parse(output_filename).getroot()
+    source_doc = open(output_filename)
+    output_doc = et.parse(source_doc)
+    output_node = output_doc.getroot()
 
     num_groups = get_scalar("number_of_groups", int, output_node.find("energy_discretization"))
     num_moments = get_scalar("number_of_moments", int, output_node.find("angular_discretization"))
@@ -20,14 +22,19 @@ def get_error(output_filename):
                   num_cells,
                   num_moments,
                   num_groups)
-    return np.mean(error[:, 0, 0]) / np.mean(phi[:, 0, 0])
+    l1 = np.mean(error[:, 0, 0]) / np.mean(phi[:, 0, 0])
+    time = get_scalar("total", float, output_node.find("timing"))
+
+    source_doc.close()
+    
+    return l1, time
 
 def get_errors(fileout):
     # Get errors for each set of output data
     output_filenames = sorted(glob.glob("*.xml.out"))
     for output_filename in output_filenames:
         try:
-            error = get_error(output_filename)
+            data = get_error(output_filename)
         except:
             print("test {} output format incorrect".format(output_filename))
             print("\t{}".format(sys.exc_info()))
@@ -38,9 +45,10 @@ def get_errors(fileout):
         input_values = output_string.split("_")
         for input_value in input_values:
             fileout.write("{}\t".format(input_value))
-        fileout.write("{}\t".format(error))
+        for val in data:
+            fileout.write("{}\t".format(val))
         fileout.write("\n")
-            
+        
 if __name__ == '__main__':
     with open("output.txt", 'a') as fileout:
         get_errors(fileout)
