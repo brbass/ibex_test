@@ -11,24 +11,21 @@ def get_data():
     data["executable"] = "ibex"
     data["num_procs"] = 8
     data["parameters"] = ["(RBF)",
-                          "(INT_ORDS)",
                           "(NEIGHBORS)",
                           "(POINTS)",
                           "(CELLS)"]
     data["values"] = []
     data["descriptions"] = []
-    for rbf, neighbor_cases in zip(["wendland11", "wendland33"],
-                                   [[6, 8, 10, 12, 14], [8, 10, 12, 14, 16, 18]]):
-        for int_ords in [8, 16, 32]:
-            for neighbors in neighbor_cases:
-                for points in [8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096]:
-                    if neighbors <= points:
-                        cells = points - 1
-                        data["values"].append([rbf,
-                                               int_ords,
-                                               neighbors,
-                                               points,
-                                               cells])
+    neighbor_cases = [8, 10, 12, 14, 16]
+    for rbf in ["wendland10", "wendland11", "wendland12", "wendland13", "wendland30", "wendland31", "wendland32", "wendland33"]:
+        for neighbors in neighbor_cases:
+            for points in [8, 16, 32, 64, 128, 256, 512, 1024]:
+                if neighbors <= points:
+                    cells = points - 1
+                    data["values"].append([rbf,
+                                           neighbors,
+                                           points,
+                                           cells])
                     
     data["descriptions"] = data["values"]
     data["prefix"] = "test"

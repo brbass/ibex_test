@@ -42,6 +42,7 @@ for i, mesh_index in enumerate(mesh.cell_generator()):
     reshaped_flux[ibex_ind] = flux_vals[i]
     reshaped_std_dev[ibex_ind] = std_dev_vals[i]
 print(np.amax(reshaped_std_dev))
+print(np.mean(reshaped_std_dev))
 
 # Save average flux values
 np.savetxt("benchmark_flux.txt", reshaped_flux, delimiter="\t")

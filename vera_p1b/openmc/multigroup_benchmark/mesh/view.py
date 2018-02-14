@@ -25,6 +25,7 @@ av_val = np.mean(flux_vals)
 flux_vals /= av_val
 std_dev_vals /= av_val
 print([np.amax(std_dev_vals[:, i]) for i in range(2)])
+print([np.mean(std_dev_vals[:, i]) for i in range(2)])
     
 # Save average flux values
 np.savetxt("eigenvector_flux.txt", flux_vals, delimiter="\t")

@@ -1,0 +1,24 @@
+#!/bin/sh
+
+#PBS -N vera_1b_openmc
+
+#PBS -M brbass@umich.edu
+#PBS -m abe
+
+#PBS -l nodes=1:ppn=8,pmem=25gb,walltime=72:00:00
+#PBS -j oe
+#PBS -V
+
+#PBS -A bckiedro_fluxm
+#PBS -q fluxm
+#PBS -l qos=flux
+
+#  Change to the directory you submitted from
+if [ -n "$PBS_O_WORKDIR" ]; then cd $PBS_O_WORKDIR; fi
+
+# set OpenMP environment
+export OMP_NUM_THREADS=8
+
+#  Put your job commands here:
+python run.py > output.txt
+

@@ -40,11 +40,17 @@ def save_output(fileout,
         phi_err = phi_calc - phi_bench
         l2_err = np.sqrt(np.sum(np.power(phi_err, 2)) / np.sum(np.power(phi_bench, 2)))
         abs_err = np.sum(np.divide(np.abs(phi_err), phi_bench)) / (1. * len(phi_bench))
+        linf_ind = np.abs(phi_err).argmax()
+        linf_err = phi_err[linf_ind]
+        linf_rel_ind = np.abs(phi_err / phi_bench).argmax()
+        linf_rel_err = phi_err[linf_rel_ind] / phi_bench[linf_rel_ind]
+
+        print(phi_err[17], contained_string, data_out["number_of_points"])
         
         # Save data
         for par in ["number_of_points", "weighting", "number_of_moments", "number_of_ordinates"]:
             fileout.write("{}\t".format(data_out[par]))
-        for val in [contained_string, l2_err, abs_err]:
+        for val in [contained_string, l2_err, abs_err, linf_ind, linf_err, linf_rel_ind, linf_rel_err]:
             fileout.write("{}\t".format(val))
         fileout.write("\n")
         # for par in ["spatial_initialization", "sweep_initialization", "solve"]:

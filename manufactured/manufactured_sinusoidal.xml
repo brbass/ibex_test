@@ -1,0 +1,93 @@
+<input type='manufactured'
+       print='true'
+       number_of_threads='7'>
+  <energy_discretization>
+    <number_of_groups>1</number_of_groups>
+  </energy_discretization>
+  <angular_discretization>
+    <dimension>2</dimension>
+    <number_of_moments>3</number_of_moments>
+    <rule>2</rule>
+  </angular_discretization>
+  <manufactured>
+    <solution type='sinusoidal'>
+      <values>2. 0.4 0.1 0.0 0.0 0.0</values>
+      <relative_amplitude>0.5</relative_amplitude>
+      <frequency>0.25 0.25</frequency>
+    </solution>
+
+    <cross_sections type='sinusoidal'>
+      <sigma_t>
+        3.0
+      </sigma_t>
+      <sigma_s>
+        2.2 0.2 0.0
+      </sigma_s>
+      <relative_amplitude>0.5</relative_amplitude>
+      <frequency>0.25 0.2</frequency>
+    </cross_sections>
+
+    <boundary_surfaces>
+      <positions>
+        -2 2
+        -2 2
+      </positions>
+    </boundary_surfaces>
+    
+    <error integration_ordinates='256'
+           norm='linf'>
+      <dimensional_cells>1 1</dimensional_cells>
+    </error>
+    <error integration_ordinates='256'
+           norm='l1'>
+      <dimensional_cells>1 1</dimensional_cells>
+    </error>
+    <error integration_ordinates='256'
+           norm='integral'>
+      <dimensional_cells>1 1</dimensional_cells>
+    </error>
+  </manufactured>
+  <spatial_discretization input_format='cartesian'>
+    <options weighting='full'
+             external_integral_calculation='true'
+             supg='true'
+             tau_scaling='none'
+             identical_basis_functions='true'
+             output_material='false'
+             output_integrals='false'
+             adaptive_quadrature='false'>
+      <tau>1.0</tau>
+      <integration_ordinates>32</integration_ordinates>
+      <dimensional_cells>20 20</dimensional_cells>
+    </options>
+    <dimensional_points>21 21</dimensional_points>
+    <weight_functions>
+      <radius_calculation method='coverage'>
+        <number_of_neighbors>12</number_of_neighbors>
+        <radius_multiplier>1.0</radius_multiplier>
+      </radius_calculation>
+      <meshless_function type='linear_mls'
+                         function='wendland33'/>
+    </weight_functions>
+  </spatial_discretization>
+  <transport solver='aztec_ifpack'
+             level_of_fill='1.0'
+             drop_tolerance='1e-12'
+             tolerance='1e-12'
+             kspace='40'
+             max_restarts='40'
+             max_iterations='10000'/>
+  <solver type='krylov'
+          max_iterations='1000'
+          kspace='20'
+          solver_print='1'
+          tolerance='1e-11'>
+    <!-- <value type='centers'/> -->
+    <!-- <value type='integral' -->
+    <!--        adaptive_quadrature='false' -->
+    <!--        integration_ordinates='16'> -->
+    <!--   <limits>-2 2 -2 2</limits> -->
+    <!--   <dimensional_cells>10 10</dimensional_cells> -->
+    <!-- </value> -->
+  </solver>
+</input>

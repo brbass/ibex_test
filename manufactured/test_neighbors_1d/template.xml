@@ -52,7 +52,7 @@
              output_integrals='false'
              adaptive_quadrature='false'>
       <tau>1.0</tau>
-      <integration_ordinates>(INT_ORDS)</integration_ordinates>
+      <integration_ordinates>8</integration_ordinates>
       <dimensional_cells>(CELLS)</dimensional_cells>
     </options>
     <dimensional_points>(POINTS)</dimensional_points>
@@ -65,7 +65,7 @@
                          function='(RBF)'/>
     </weight_functions>
   </spatial_discretization>
-  <transport solver='aztec_ifpack'
+  <transport solver='amesos'
              level_of_fill='1.0'
              drop_tolerance='1e-12'
              tolerance='1e-12'

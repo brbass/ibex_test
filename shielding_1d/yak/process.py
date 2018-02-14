@@ -74,5 +74,7 @@ if __name__ == '__main__':
     #                     10)
     # output_phi_integral("dfem_benchmark_large.xml.out",
     #                     500)
-    output_phi_integral("dfem_benchmark_small.xml.out",
-                        5)
+    # output_phi_integral("dfem_benchmark_small.xml.out",
+    #                     5)
+    output_phi_integral("dfem_benchmark_angular.xml.out",
+                        10)

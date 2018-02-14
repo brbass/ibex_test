@@ -24,7 +24,10 @@ def get_parameters():
                 [22, 0.02, 0.002],
                 [24, 0.015, 0.0015],
                 [25, 0.01, 0.001]]
-    for param in params10:
+    paramstemp = [[22, 0.02, 0.002],
+                  [24, 0.015, 0.0015],
+                  [25, 0.01, 0.001]]
+    for param in paramstemp:
         point_files.append("vera1e_mesh_{}_{}_{}_0.4101_1.26.xml".format(*param))
         descriptions.append("mult{}-{}-{}".format(param[0], param[1], param[2]))
     for point_file in point_files:
@@ -50,7 +53,7 @@ def get_values(num_procs,
     data["descriptions"] = []
     for tau in [1.0]:
         for weighting in ["full"]:
-            for rule in [5, 4, 3]:
+            for rule in [2, 1]:
                 for num_point, point_file, point_description in zip(num_points, point_files, point_descriptions):
                     min_integration_cells = 128
                     integration_cells = int(4 * np.sqrt(num_point))

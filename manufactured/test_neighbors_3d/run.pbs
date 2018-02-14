@@ -5,7 +5,7 @@
 #PBS -M brbass@umich.edu
 #PBS -m abe
 
-#PBS -l nodes=1:ppn=8,pmem=25gb,walltime=24:00:00
+#PBS -l nodes=1:ppn=8,pmem=25gb,walltime=48:00:00
 #PBS -j oe
 #PBS -V
 
@@ -20,5 +20,6 @@ if [ -n "$PBS_O_WORKDIR" ]; then cd $PBS_O_WORKDIR; fi
 export OMP_NUM_THREADS=8
 
 #  Put your job commands here:
-python run.py
+python run.py;
+python process.py
 

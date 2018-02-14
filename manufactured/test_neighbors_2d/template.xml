@@ -1,6 +1,6 @@
 <input type='manufactured'
        print='true'
-       number_of_threads='1'>
+       number_of_threads='2'>
   <energy_discretization>
     <number_of_groups>1</number_of_groups>
   </energy_discretization>
@@ -53,7 +53,7 @@
              output_integrals='false'
              adaptive_quadrature='false'>
       <tau>1.0</tau>
-      <integration_ordinates>(INT_ORDS)</integration_ordinates>
+      <integration_ordinates>8</integration_ordinates>
       <dimensional_cells>(CELLS) (CELLS)</dimensional_cells>
     </options>
     <dimensional_points>(POINTS) (POINTS)</dimensional_points>
