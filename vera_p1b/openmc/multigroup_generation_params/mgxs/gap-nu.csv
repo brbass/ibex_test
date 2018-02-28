@@ -1,0 +1,5 @@
+cell,group in,group out,nuclide,mean,std. dev.
+2,1,1,total,1.0,0.022226845107305097
+2,1,2,total,1.0,0.3389044074127293
+2,2,1,total,0.0,0.0
+2,2,2,total,1.0,0.05822451148671623

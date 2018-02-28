@@ -5,11 +5,11 @@ import copy
 import numpy as np
 import sys
 
-def get_parameters():
+def get_parameters(available_mem=100.):
     # Get sets of points and cells
     point_sets = []
     cell_sets = []
-    for xpts in range(10, 29, 2):
+    for xpts in range(10, 34, 2):
         ypts = int(np.rint(xpts * 1.2))
         zpts = int(np.rint(xpts * 1.5))
         point_sets.append([xpts, ypts, zpts])
@@ -20,7 +20,7 @@ def get_parameters():
     for point_set in point_sets:
         num_points = np.prod(point_set)
         mem = num_points * 0.0012 # Estimated memory from Kobayashi
-        proc = int(np.floor(100./mem))
+        proc = int(np.floor(available_mem/mem))
         if proc < 1:
             print("case can't run with 0 procs")
         elif proc > 4:
@@ -65,8 +65,12 @@ def run_case(num_procs,
     data["template_filename"] = "template.xml"
 
     # Run cases
-    input_filenames = full_run_from_template(data,
-                                             True) # Save input files
+    if run:
+        input_filenames = full_run_from_template(data,
+                                                 True) # Save input files
+    else:
+        input_filenames = full_save_from_template(data,
+                                                  False)
     
     # Get output
     # for i, input_filename in enumerate(input_filenames):
@@ -75,7 +79,9 @@ def run_case(num_procs,
     #     except:
     #         print("test {} failed to output data".format(input_filename))
     #         print("\t{}".format(sys.exc_info()))
-    
+
+    return input_filenames
+
 def run_all(run = True):
     # Get cases
     procs, data_cases = get_parameters()

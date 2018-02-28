@@ -6,54 +6,58 @@ from ibex_io import get_data
 def plot_convergence():
     # Get convergence data
     # Columns:
-    # 0. Dim points
-    # 1. Tau
-    # 2. Weighting
-    # 3. Dim int cells
-    # 4. Scattering int
+    # 0. Num points
+    # 1. Weighting
+    # 2. Number of moments
+    # 3. Number of ordinates
+    # 4. Scattering option
     # 5. L2 error
     # 6. Abs error
-    # 7. Num moments
-    # 8. Num ordinates
-    # 9. Num points
-    # 10. Weighting
-    # 11-13. Timing
-    # 14-43. Phi err
-    data = np.genfromtxt('output.txt', dtype=None , delimiter="\t")
+    sca_ind, wei_ind, num_ind = 4, 1, 0
+    l2_ind = 5
+    data = np.genfromtxt('output.txt',
+                         dtype=None)
     
-    # # Sort data by number of points
-    data = sorted(data, key=lambda data: (data[9]))
-
-    # # Get individual arrays
+    # Sort data by number of points
+    data = sorted(data, key=lambda data: (data[num_ind]))
+    
+    # Get individual arrays
     key0 = [b'basis', b'full']
-    key1 = [1.0]#[0.5, 1.0]
-    key2 = [0, 5]
-    keys = [[i, j, k] for i, j, k in itertools.product(key0, key1, key2)]
+    key1 = [b'abs', b'sca']
+    keys = [[i, j] for i, j in itertools.product(key0, key1)]
     indices = []
     for i, key in enumerate(keys):
-        ind = [j for j in range(len(data)) if key[0] in data[j][2] and key[1] == data[j][1] and key[2] == data[j][4]]
+        ind = [j for j in range(len(data)) if key[0] in data[j][wei_ind] and key[1] in data[j][sca_ind]]
         indices.append(ind)
     errors = []
     points = []
     for i in range(len(keys)):
-        err = np.abs([data[j][5] for j in indices[i]])
+        err = np.abs([data[j][l2_ind] for j in indices[i]])
         errors.append(err)
-        pt = [data[j][9] for j in indices[i]]
+        pt = [data[j][num_ind] for j in indices[i]]
         points.append(pt)
-
+        
     # Plot data
-    plt.figure()
+    fig, ax = plt.subplots()
     plt.xlabel("number of points")
     plt.ylabel(r"relative $L_2$ error")
-    plt.ylim([10e-4, 1])
-    markers = ['D', '^', 's', 'v']
+    plt.xlim([1e3, 1e5])
+    plt.ylim([1e-3, 1])
+    colors = ['#66c2a5','#e78ac3','#fc8d62','#8da0cb']
+    markers = ['D','s','^','v']
+    styles = ["-","--","-","--"]
+    lns = [[],[]]
     for i, key in enumerate(keys):
-        labels = [key[0].decode(), "abs" if key[2] == 0 else "sca"]
-        plt.semilogy(points[i], errors[i], marker=markers[i], label="{}, {}".format(labels[0], labels[1]))
+        labels = [key[0].decode(), key[1].decode()]
+        ln_ind = 0 if key[1] == 0 else 1
+        ln = ax.loglog(points[i], errors[i], color=colors[i], marker=markers[i], linestyle=styles[i])
+        lns[ln_ind].append(ln[0])
     plt.grid(True, which='major', linestyle='-', color='grey')
     plt.grid(True, which='minor', linestyle='-', color='lightgrey')
-    plt.legend()
-    plt.savefig("convergence_kobayashi.pdf", bbox_inches='tight')
+    leg1 = plt.legend(lns[0], [key0[0].decode(), key0[1].decode()], title="absorbing", loc=[0.62, 0.79])
+    leg2 = plt.legend(lns[1], [key0[0].decode(), key0[1].decode()], title="scattering", loc=[0.81, 0.79])
+    plt.gca().add_artist(leg1)
+    plt.savefig("kobayashi_convergence.pdf", bbox_inches='tight')
     plt.show()
     plt.close()
 

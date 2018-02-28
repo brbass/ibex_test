@@ -16,9 +16,9 @@ np.savetxt("k_eigenvalue.txt", keff)
 print(keff)
 
 # Tally results
-# tally = sp.get_tally(name='flux')
-# print(tally)
-# flux = tally.get_slice(scores=['flux-Y0,0'])
-# print(flux)
-# print(len(flux.mean))
-
+tally = sp.get_tally(name='flux')
+print(tally)
+flux = tally.get_slice(scores=['flux-Y0,0'])
+print(flux)
+print(len(flux.mean))
+print(flux.mean)

@@ -142,22 +142,22 @@ geometry.export_to_xml()
 # Tallies #
 ###########
 
-mesh = openmc.Mesh()
-mesh.dimension = [20, 20, 1]
-mesh.lower_left = [-0.63, -0.63, -0.63]
-mesh.upper_right = [0.63, 0.63, 0.63]
+# mesh = openmc.Mesh()
+# mesh.dimension = [20, 20, 1]
+# mesh.lower_left = [-0.63, -0.63, -0.63]
+# mesh.upper_right = [0.63, 0.63, 0.63]
 
-mesh_filter = openmc.MeshFilter(mesh)
+# mesh_filter = openmc.MeshFilter(mesh)
 
-energy_filter = openmc.EnergyFilter(groups.group_edges)
+# energy_filter = openmc.EnergyFilter(groups.group_edges)
 
-tally = openmc.Tally(name='flux')
-tally.filters = [mesh_filter, energy_filter]
-tally.scores = ['flux-Y1', 'fission']
+# tally = openmc.Tally(name='flux')
+# tally.filters = [mesh_filter, energy_filter]
+# tally.scores = ['flux-Y1', 'fission']
 
-tallies_file = openmc.Tallies()
-tallies_file.append(tally)
-tallies_file.export_to_xml()
+# tallies_file = openmc.Tallies()
+# tallies_file.append(tally)
+# tallies_file.export_to_xml()
 
 ############
 # Settings #
@@ -167,7 +167,7 @@ settings_file = openmc.Settings()
 settings_file.energy_mode = "multi-group"
 settings_file.batches = 200
 settings_file.inactive = 50
-settings_file.particles = int(1e6)
+settings_file.particles = int(1e7)
 
 bounds = [-0.42, -0.42, -0.42, 0.42, 0.42, 0.42]
 uniform_dist = openmc.stats.Box(bounds[:3], bounds[3:])
