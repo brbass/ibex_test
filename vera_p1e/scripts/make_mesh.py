@@ -1,11 +1,13 @@
 from mesh_functions import *
 import numpy as np
+import argparse
 
 def get_points(num_radii,
                max_delta,
                initial_delta,
                ring_start = 0.4101,
-               length = 1.26):
+               length = 1.26,
+               exclude_corners = False):
     # Set parameters
     initial_delta = np.abs(initial_delta)
     r0 = ring_start - initial_delta / 2
@@ -71,9 +73,14 @@ def get_points(num_radii,
     num_points_l = num_intervals_l + 1
     delta_l = l / num_intervals_l
     for sign in [-1, 1]:
-        for i in range(num_points_l):
-            pos = -l2 + delta_l * i
-            points.append([pos, sign * l2])
+        if exclude_corners:
+            for i in range(1, num_points_l - 1):
+                pos = -l2 + delta_l * i
+                points.append([pos, sign * l2])
+        else:
+            for i in range(num_points_l):
+                pos = -l2 + delta_l * i
+                points.append([pos, sign * l2])
         for i in range(1, num_points_l - 1):
             pos = -l2 + delta_l * i
             points.append([sign * l2, pos])
@@ -87,15 +94,21 @@ def output_points(num_radii,
                   max_delta,
                   initial_delta,
                   ring_start = 0.4101,
-                  length = 1.26):
+                  length = 1.26,
+                  exclude_corners = False):
     # Get points and output path
-    num_points, points = get_points(num_radii, max_delta, initial_delta, ring_start)
+    num_points, points = get_points(num_radii, max_delta, initial_delta, ring_start, exclude_corners)
     print("mesh has {} points".format(num_points))
-    output_path = "vera1e_mesh_{}_{}_{}_{}_{}.xml".format(num_radii,
-                                                          max_delta,
-                                                          initial_delta,
-                                                          ring_start,
-                                                          length)
+    if exclude_corners:
+        corner_string = "_exclude"
+    else:
+        corner_string = ""
+    output_path = "vera1e_mesh_{}_{}_{}_{}_{}{}.xml".format(num_radii,
+                                                            max_delta,
+                                                            initial_delta,
+                                                            ring_start,
+                                                            length,
+                                                            corner_string)
 
     # Get node and add input data
     node = xml_points(2, # dimension
@@ -118,16 +131,20 @@ def output_points(num_radii,
         plt.show()
     
 if __name__ == '__main__':
-    if (len(sys.argv) < 4):
-        print("vera1e_mesh.py [num_radii max_delta initial_delta (ring_start=0.4101) (length=1.26)]")
-        sys.exit()
-    args = []
-    args.append(int(sys.argv[1]))
-    for i in range(2, len(sys.argv)):
-        args.append(float(sys.argv[i]))
-    output_points(*args)
-    # num_radii = int(sys.argv[1])
-    # max_delta = float(sys.argv[2])
-    # initial_delta = float(sys.argv[3])
-    # output_points(num_radii, max_delta, initial_delta)
-
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--num_radii", type=int, required=True, help="number of points inside the radius")
+    parser.add_argument("--initial_delta", type=float, required=True)
+    parser.add_argument("--max_delta", type=float, required=True)
+    parser.add_argument("--exclude_corners", action='store_true', default=False,
+                        help="exclude corner points")
+    parser.add_argument("--length", type=float, required=False, default=1.26,
+                        help="square side length")
+    parser.add_argument("--ring_start", type=float, required=False, default=0.4101,
+                        help="center location of the ring")
+    args = parser.parse_args()
+    output_points(args.num_radii,
+                  args.max_delta,
+                  args.initial_delta,
+                  args.ring_start,
+                  args.length,
+                  args.exclude_corners)
